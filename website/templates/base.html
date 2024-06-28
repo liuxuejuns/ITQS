@@ -1,0 +1,515 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<link rel="shortcut icon" href="#" />
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=11" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>Intelligent Training Quiz System</title>
+	<link rel="stylesheet" href="{% static 'common/css/adminlte.min.css'%}">
+	<link rel="stylesheet" href="{% static 'font-awesome-4.7.0/css/font-awesome.css'%}">
+	<link rel="stylesheet" href="{% static 'common/css/tempusdominus-bootstrap-4.min.css'%}">
+	<link rel="stylesheet" href="{% static 'common/css/icheck-bootstrap.min.css'%}">
+	<link rel="stylesheet" href="{% static 'common/css/jqvmap.min.css'%}">
+	<link rel="stylesheet" href="{% static 'common/css/OverlayScrollbars.min.css'%}">
+	<link rel="stylesheet" href="{% static 'common/css/daterangepicker.css'%}">
+	<link rel="stylesheet" href="{% static 'common/css/summernote-bs4.min.css'%}">
+	<link rel="stylesheet" href="{% static 'common/css/bootstrap-table.min.css'%}">
+	{% block extend_css %}
+	<link rel="stylesheet" href="{% static 'common/css/self/train_skill_category.css'%}">
+	{% endblock %}
+	{% block self_css %}
+	<link rel="stylesheet" href="{% static 'common/css/self/skill_ipm.css'%}">
+	<link rel="stylesheet" href="{% static 'common/css/self/book.css'%}">
+	{% endblock %}
+	<!-- 弹窗的模式引入，版本sweetalert2_10_13_0.兼容IE浏览器，需引入promise.min.js文件 -->
+	<link rel="stylesheet" href="{% static 'common/css/sweetalert2.min.css'%}">
+	<script src="{% static 'common/js/sweetalert2.min.js'%}"></script>
+
+	<script src="{% static 'jquery/jquery.min.js'%}"></script>
+	{% comment %} bootstrap-table必须要在 bootstrap.min.js前面，否则表格搜索框样式会变化 {% endcomment %}
+	<script src="{% static 'common/js/bootstrap-table.js'%}"></script>
+	<script src="{% static 'common/js/jquery-ui.min.js'%}"></script>
+	<script src="{% static 'common/js/daterangepicker.js'%}"></script>
+	<script src="{% static 'common/js/jquery.overlayScrollbars.min.js'%}"></script>
+	<script src="{% static 'common/js/adminlte.js'%}"></script>
+	<script src="{% static 'jquery/jquery.cookie/jquery.cookie.js'%}"></script>
+	<script src="{% static 'jquery/jquery.i18n.properties.js'%}"></script>
+	<script src="{% static 'common/js/slef/language_extensions.js'%}"></script>
+	{% block bootstrap %}
+	<link rel="stylesheet" href="{% static 'bootstrap-3.3.7-dist/css/bootstrap.min.css'%}">
+	<script src="{% static 'bootstrap-3.3.7-dist/js/bootstrap.min.js'%}"></script>
+	{% endblock %}
+	{% block extend_js %}
+	<script src="{% static 'sheetjs-0.16.9-dist/xlsx.core.min.js'%}"></script>
+	{% endblock %}
+	{% block self_js %}
+	<script src="{% static 'common/js/slef/public.js' %}"></script>
+	<script src="{% static 'common/js/slef/base.js'%}"></script>
+	<script src="{% static 'common/js/slef/index.js'%}"></script>
+	<script src="{% static 'common/js/slef/personal.js' %}"></script>
+	<script src="{% static 'common/js/slef/master_user.js' %}"></script>
+	<script src="{% static 'common/js/slef/technology.js' %}"></script>
+	<script src="{% static 'common/js/slef/plant.js' %}"></script>
+	<script src="{% static 'common/js/slef/questionbank.js' %}"></script>
+	<script src="{% static 'common/js/slef/trainingbank.js' %}"></script>
+	<script src="{% static 'common/js/slef/option.js' %}"></script>
+	<script src="{% static 'common/js/slef/skill_sort.js'%}"></script>
+	<script src="{% static 'common/js/slef/qBankSort.js' %}"></script>
+	<script src="{% static 'common/js/slef/train_skill_category.js'%}"></script>
+	<script src="{% static 'common/js/slef/train_record.js' %}"></script>
+	<script src="{% static 'dist/excellentexport.js' %}"></script>
+	<script src="{% static 'common/js/slef/exam_record.js' %}"></script>
+	<script src="{% static 'common/js/slef/book.js'%}"></script>
+	<script src="{% static 'common/js/slef/bookPage.js'%}"></script>
+	<script src="{% static 'common/js/slef/bookPageHistory.js'%}"></script>
+	<script src="{% static 'common/js/slef/choiceQuestion.js'%}"></script>
+	<script src="{% static 'common/js/slef/qBankHistory.js'%}"></script>
+	<script src="{% static 'common/js/slef/choiceHistory.js'%}"></script>
+	<script src="{% static 'common/js/slef/train_book.js'%}"></script>
+	<script src="{% static 'common/js/slef/examed_cq.js'%}"></script>
+	<script src="{% static 'common/js/slef/examieed.js' %}"></script>
+	{% endblock %}
+</head>
+<style type="text/css">
+	/* 隐藏adminlte库多余的倒三角 */
+	.dropdown-toggle::after {
+		display: none;
+	}
+
+	.dropup .dropdown-toggle::after {
+		display: none;
+	}
+
+	/* 隐藏模块背景 */
+	.content-wrapper {
+		background-color: #f4f6f900;
+	}
+
+	.card {
+		background-color: #fff0;
+	}
+
+	/* 隐藏模块底部的分界线 */
+	.card {
+		box-shadow: 0 0 0px rgba(0, 0, 0, 0), 0 0px 0px rgba(0, 0, 0, 0);
+		margin-bottom: 0rem
+	}
+
+	/* 隐藏主页面顶部的home目录处背景颜色，使得与总背景一致 */
+	.navbar-white {
+		background-color: #fff0;
+	}
+
+	/* 修改所有bootstrap表格的边框为黑色 */
+	.table-bordered>tbody>tr>td,
+	.table-bordered>tbody>tr>th,
+	.table-bordered>tfoot>tr>td,
+	.table-bordered>tfoot>tr>th,
+	.table-bordered>thead>tr>td,
+	.table-bordered>thead>tr>th,
+	.table-bordered {
+		border: 1px solid rgba(41, 40, 40, 0.562)!important;
+	}
+</style>
+
+<body background="{% static 'common/img/bg2.jpg' %}"
+	style="background-repeat: no-repeat;background-size: 100% 100%;background-attachment: fixed;">
+	<div class="wrapper">
+		<!-- Navbar -->
+		<nav class="main-header navbar navbar-expand navbar-white navbar-light"
+			style="margin-bottom: 0px;margin-top: 0px;">
+			<!-- Left navbar links -->
+			<ul class="navbar-nav">
+				<li class="nav-item">
+					<a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fa fa-bars"></i></a>
+				</li>
+				<li class="nav-item d-none d-sm-inline-block">
+					<a href="/website/index" class="nav-link"><span data-locale="base_home">首页</span><span
+							class="lang_en">Home</span></a>
+				</li>
+			</ul>
+
+			<ul class="navbar-nav ml-auto">
+				{% block home_nav %}{% endblock %}
+				<li id="clo" class="nav-item">
+					<a class="nav-link" data-widget="fullscreen" href="#" role="button">
+						<i class="fa fa-arrows-alt"></i>
+					</a>
+				</li>
+				<li class="nav-item">
+					<select name="" style="min-width: 130px;margin-top: 13px;" id="lang">
+						<option value="zh">中文</option>
+						<option value="en">English</option>
+						<option value="vi">Tiếng Việt</option>
+						<option value="bo" data-locale="zh_en">中英对照</option>
+					</select>
+				</li>
+			</ul>
+		</nav>
+		<aside class="main-sidebar sidebar-dark-primary elevation-4">
+			<div>
+				<img src="{% static 'common/img/wistron_logo.png'%}">
+			</div>
+			<a href="#" class="brand-link">
+				<span class="brand-text font-weight-light">Intelligent Training Quiz System <span id="version">V
+						1.02.00</span>
+			</a>
+			<div class="sidebar">
+				<div class="user-panel mt-3 pb-3 mb-3 d-flex">
+					<div class="info">
+						<a href="#personal" class="d-block" id="StaffName_show" title="修改个人信息" data-toggle="tab" onclick="get_all_personal()">StaffID_login</a>
+					</div>
+					<div class="info" style="float:right">
+						<a href="/" class="d-block" style="float:right;" data-locale="base_logout">退出登录</a>
+					</div>
+				</div>
+				<div id="itqs_scroll">
+					<ul class="nav nav-pills nav-stacked navbar-nav" style="min-height: 470px;min-width: 100%;">
+						<li id="admin_parent" class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+								<span data-locale="base_Adm">
+									管理员
+								</span>
+								<span class="lang_en sml">Admin</span>
+								<img src="/static/common/img/list.png" />
+							</a>
+							<ul class="dropdown-menu" role="menu">
+								<li id="admin_child1" onclick="admin_child1()">
+									<a href="#userManagement" data-toggle="tab">
+										<span data-locale="base_userManagement">管理用户</span>
+										<span class="lang_en sml">User Management</span>
+									</a>
+								</li>
+								<li id="admin_child2" onclick="admin_child2()">
+									<a href="#typeManagement" data-toggle="tab">
+										<span data-locale="base_tpyeManagement">管理技能类型</span>
+										<span class="lang_en sml">Skill Type Managementt</span>
+									</a>
+								</li>
+								<!-- <li id="admin_child3" onclick="admin_child3()">
+									<a href="#factoryLanguageManagement" data-toggle="tab">
+										<span data-locale="base_langManagement">管理厂别及语言</span>
+										<span class="lang_en sml">Factory and Language Management</span>
+									</a>
+								</li> -->
+								<li id="admin_child4" onclick="admin_child4()">
+									<a href="#questionBankRoleManagement" data-toggle="tab">
+										<span data-locale="base_questionBankManagement">管理题库与角色</span>
+										<span class="lang_en sml">Question Bank and Role Management</span>
+									</a>
+								</li>
+								<li id="admin_child5" onclick="admin_child5()">
+									<a href="#teachingMaterialBankRoleManagement" data-toggle="tab">
+										<span data-locale="base_bookBankManagement">管理教材库与角色</span>
+										<span class="lang_en sml">Teaching Material Bank and Role Management</span>
+									</a>
+								</li>
+								<!-- <li id="admin_child6" onclick="admin_child6()">
+									<a href="#NGTypeManagement" data-toggle="tab">
+										<span data-locale="base_NGTypeManagement">管理NG类型</span>
+										<span class="lang_en sml">NG Type Management</span>
+									</a>
+								</li> -->
+							</ul>
+						</li>
+						<li id="manage_book_parent" class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown"
+								onclick="manageBookParentClick()">
+								<span data-locale="base_book">技能教材</span>
+								<span class="lang_en sml">Teaching Material </span>
+							</a>
+							<ul class="dropdown-menu" role="menu" style="display: none;">
+								<li id="manageBookParentClick" onclick="manage_book_parent()">
+									<a href="#teachingMaterial" data-toggle="tab">
+										<span data-locale="base_book">技能教材</span>
+										<span class="lang_en sml">Teaching Material </span>
+									</a>
+								</li>
+								<li>
+									<a id="bookA" href="#bookHTML" data-toggle="tab" onclick="bookA()">
+										<span>book.html</span>
+									</a>
+								</li>
+								<li>
+									<a id="bookPageA" href="#bookPageHTML" data-toggle="tab" onclick="bookPageA()">
+										<span>bookPage.html</span>
+									</a>
+								</li>
+								<li>
+									<a id="bookPageHistroryA" href="#bookPageHistroryHTML" data-toggle="tab"
+										onclick="bookPageHistroryA()">
+										<span>bookPageHistrory.html</span>
+									</a>
+								</li>
+							</ul>
+						</li>
+
+						<li id="skill_quest_parent" class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" onclick="skillQuesParentClick()">
+								<span data-locale="base_question">
+									技能考题
+								</span>
+								<span class="lang_en sml">Examination Questions</span>
+							</a>
+							<ul class="dropdown-menu" role="menu" style="display: none;">
+								<li id="skillQuesParentClick" onclick="skill_quest_parent()">
+									<a href="#examinationQuestions" data-toggle="tab">
+										<span data-locale="base_question">
+											技能考题
+										</span>
+										<span class="lang_en sml">Examination Questions</span>
+									</a>
+								</li>
+								<li>
+									<a id="choiceQuestionA" href="#choiceQuestionHTML" data-toggle="tab"
+										onclick="choiceQuestionA()">
+										<span>choiceQuestion.html</span>
+									</a>
+								</li>
+								<li>
+									<a id="qBankHistoryA" href="#qBankHistoryHTML" data-toggle="tab"
+										onclick="qBankHistoryA()">
+										<span>qBankHistory.html</span>
+									</a>
+								</li>
+								<li>
+									<a id="choiceHistoryA" href="#choiceHistoryHTML" data-toggle="tab"
+										onclick="choiceHistoryA()">
+										<span>choiceHistory.html</span>
+									</a>
+								</li>
+							</ul>
+						</li>
+						<li id="train_parent" class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+								<span data-locale="base_train">培训</span>
+								<span class="lang_en sml">Training</span>
+								<img src="/static/common/img/list.png" />
+							</a>
+							<ul class="dropdown-menu" role="menu">
+								<li id="train_child1" onclick="train_child1()">
+									<a href="#skillTraining" data-toggle="tab">
+										<span data-locale="base_skillTrain">技能培训</span>
+										<span class="lang_en sml">Skill Training</span>
+									</a>
+								</li>
+								<li style="display: none;">
+									<a id="train_bookA" href="#train_bookHTML" data-toggle="tab"
+										onclick="train_bookA()">
+										<span>train_book.html</span>
+									</a>
+								</li>
+								<li style="display: none;">
+									<a id="trainA" href="#trainHTML" data-toggle="tab" onclick="trainA()">
+										<span>train.html</span>
+									</a>
+								</li>
+								<li id="train_child2" onclick="train_child2(this)">
+									<a href="#TrainingRecords" data-toggle="tab">
+										<span data-locale="base_myTrainRecord">我的培训记录</span>
+										<span class="lang_en sml">My Training Records</span>
+									</a>
+								</li>
+							</ul>
+						</li>
+
+						<li id="practice_parent" onclick="practice_parent()">
+							<a href="#Practice" data-toggle="tab">
+								<span data-locale="base_practice">训练</span>
+								<span class="lang_en sml">Practice</span>
+							</a>
+						</li>
+
+						<li id="examine_parent" class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+								<span data-locale="base_exam">考核</span>
+								<span class="lang_en sml">Examination</span>
+								<img src="/static/common/img/list.png" />
+							</a>
+							<ul class="dropdown-menu" role="menu">
+								<li id="examine_child1" onclick="examine_child1()">
+									<a href="#skillExamination" data-toggle="tab">
+										<span data-locale="base_skillExam">技能考核</span>
+										<span class="lang_en sml">Skill examination</span>
+									</a>
+								</li>
+								<li style="display: none;">
+									<a id="examingA" href="#examingHTML" data-toggle="tab" onclick="examingA()">
+										<span>examing.html</span>
+									</a>
+								</li>
+								<li id="examine_child2" onclick="examine_child2(this)">
+									<a href="#ExamRecords" data-toggle="tab">
+										<span data-locale="base_myExamRecord">我的考核记录</span>
+										<span class="lang_en sml">My Exam Records</span>
+									</a>
+								</li>
+								<li style="display: none;">
+									<a id="examed_cqA" href="#examed_cqHTML" data-toggle="tab" onclick="examed_cqA()">
+										<span>examed_cq.html</span>
+									</a>
+								</li>
+							</ul>
+						</li>
+
+						<li id="issue_parent" class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+								<span data-locale="base_publisher">
+									发布者工作
+								</span>
+								<span class="lang_en sml">Publisher</span>
+								<img src="/static/common/img/list.png" />
+							</a>
+							<ul class="dropdown-menu" role="menu">
+								<li id="issue_child1" onclick="issue_child1()">
+									<a href="#publicationofExamPapers" data-toggle="tab">
+										<span data-locale="base_issuePaper">发布考试试卷</span>
+										<span class="lang_en sml">Publish Exam</span>
+									</a>
+								</li>
+								<li style="display: none;">
+									<a id="examieedA" href="#examieedHTML" data-toggle="tab" onclick="examieedA()">
+										<span>examieed.html</span>
+									</a>
+								</li>
+								<li style="display: none;">
+									<a id="issue_paperA" href="#issue_paperHTML" data-toggle="tab"
+										onclick="issue_paperA()">
+										<span>issue_paper.html</span>
+									</a>
+								</li>
+								<li id="issue_child2" onclick="train_child2(this)">
+									<a href="#TrainingRecords" data-toggle="tab">
+										<span data-locale="base_allTrainingRecord">查看所有用户培训记录</span>
+										<span class="lang_en sml">All Users Training Records</span>
+									</a>
+								</li>
+								<li id="issue_child3" onclick="examine_child2(this)">
+									<a href="#ExamRecords" data-toggle="tab">
+										<span data-locale="base_allExamRecord">查看所有用户考核记录</span>
+										<span class="lang_en sml">All Users Exam Records</span>
+									</a>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</aside>
+
+		<div class="content-wrapper tab-content">
+			<div id="index" class="tab-pane fade in active">
+				{% include 'index.html'%}
+			</div>
+			<div id="personal" class="tab-pane fade">
+				{% include 'personal.html'%}
+			</div>
+			<div id="userManagement" class="tab-pane fade">
+				{% include 'master.html'%}
+			</div>
+			<div id="typeManagement" class="tab-pane fade">
+				{% include 'technology.html'%}
+			</div>
+			<div id="factoryLanguageManagement" class="tab-pane fade">
+				{% include 'plant.html'%}
+			</div>
+			<div id="questionBankRoleManagement" class="tab-pane fade">
+				{% include 'questionbank.html'%}
+			</div>
+			<div id="teachingMaterialBankRoleManagement" class="tab-pane fade">
+				{% include 'trainingbank.html'%}
+			</div>
+			<div id="NGTypeManagement" class="tab-pane fade">
+				{% include 'option.html'%}
+			</div>
+			<div id="teachingMaterial" class="tab-pane fade">
+				{% include 'skill_sort.html'%}
+			</div>
+			<!-- bookHTML -->
+			<div id="bookHTML" class="tab-pane fade">
+				空
+			</div>
+			<!-- bookPageHTML -->
+			<div id="bookPageHTML" class="tab-pane fade">
+				空
+			</div>
+			<!-- bookPageHistroryHTML -->
+			<div id="bookPageHistroryHTML" class="tab-pane fade">
+				空
+			</div>
+			<div id="examinationQuestions" class="tab-pane fade">
+				{% include 'qBankSort.html'%}
+			</div>
+			<!-- choiceQuestionHTML -->
+			<div id="choiceQuestionHTML" class="tab-pane fade">
+				空
+			</div>
+			<!-- qBankHistoryHTML -->
+			<div id="qBankHistoryHTML" class="tab-pane fade">
+				空
+			</div>
+			<!-- choiceHistoryHTML -->
+			<div id="choiceHistoryHTML" class="tab-pane fade">
+				空
+			</div>
+			<div id="skillTraining" class="tab-pane fade">
+				{% include 'train_skill_category.html'%}
+			</div>
+			<!-- train_bookHTML -->
+			<div id="train_bookHTML" class="tab-pane fade">
+				空
+			</div>
+			<!-- trainHTML -->
+			<div id="trainHTML" class="tab-pane fade">
+				空
+			</div>
+			<div id="TrainingRecords" class="tab-pane fade">
+				{% include 'train_records.html'%}
+			</div>
+			<div id="Practice" class="tab-pane fade">
+				{% include 'practice.html'%}
+			</div>
+			<div id="skillExamination" class="tab-pane fade">
+				{% include 'pre_exam.html'%}
+			</div>
+			<!-- examingHTML -->
+			<div id="examingHTML" class="tab-pane fade">
+				空
+			</div>
+			<div id="ExamRecords" class="tab-pane fade">
+				{% include 'exam_records.html'%}
+			</div>
+			<!-- examed_cqHTML -->
+			<div id="examed_cqHTML" class="tab-pane fade">
+				空
+			</div>
+			<div id="publicationofExamPapers" class="tab-pane fade">
+				{% include 'pre_issue_paper.html'%}
+			</div>
+			<!-- examieedHTML -->
+			<div id="examieedHTML" class="tab-pane fade">
+				空
+			</div>
+			<!-- issue_paperHTML -->
+			<div id="issue_paperHTML" class="tab-pane fade">
+				空
+			</div>
+		</div>
+	</div>
+	{% block footer_js %}
+	<!-- practice.html -->
+	<script type="text/javascript">
+		var global_media_root = {{ MEDIA_URL }};
+	</script>
+	<script src="{% static 'common/js/slef/practice.js'%}"></script>
+	<script src="{% static 'common/js/slef/pre_exam.js' %}"></script>
+	<script src="{% static 'common/js/slef/pre_issue_paper.js'%}"></script>
+	<script src="{% static 'common/js/slef/train.js' %}"></script>
+	<script src="{% static 'common/js/slef/examing.js'%}"></script>
+	<script src="{% static 'common/js/slef/issue_paper.js'%}"></script>
+	{% endblock %}
+</body>
+
+</html>

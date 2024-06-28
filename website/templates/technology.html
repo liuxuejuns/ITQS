@@ -1,0 +1,81 @@
+{% load static %}
+<!-- <div class="content-wrapper"style="margin-left: 20px;"> -->
+	<div class="manage_data_container">
+		<div id="toolbar_technology">
+		  <button id="add" class="btn btn-primary" data-toggle="modal" data-target="#add_technology_data">
+		    <i class="fa fa-plus-circle"></i>
+			<span data-locale="technology_addTypeTitle">添加技能类型</span>
+			<span class="lang_en sml">Add Skill Type</span>
+		  </button>
+		</div>
+		<table
+		  id="my_technology_table"
+		  data-toolbar="#toolbar_technology"
+		  data-search="true"
+		  data-show-toggle="true"
+		  data-show-fullscreen="true"
+		  data-click-to-select="true"
+		  data-show-pagination-switch="true"
+		  data-pagination="true"
+		  data-id-field="id"
+		  data-page-list="[10, 25, 50, 100, all]">
+			<!-- data-show-footer="true"> -->
+		</table>
+	</div>
+	<div class="modal" id="add_technology_data" tabindex="-1" role="dialog" aria-labelledby="addDataLable" aria-hidden="true" data-backdrop="static">
+		<div class="modal-dialog">
+			<div class="modal-content" style="width: 600px;">
+				<div class="modal-header">
+					<h3>
+						<span data-locale="technology_addTypeTitle">添加用户</span>
+						<span class="lang_en" style="font-size: medium;">Add Skill Type</span>
+					</h3>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				</div>
+				<div class="modal-body" style="padding:20px 40px 20px 40px;">
+					<form class="form-horizontal" role="form" autocomplete="off" method="post" id="technology_Form">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">
+								<span data-locale="technology_typeName">技能类型名称</span>
+								<span class="lang_en sml">Skill Type Name</span>
+							</label>
+							<div class="col-sm-8">
+								<input type="text" id="newtechnology" class="form-control" placeholder="确定后无法修改" data-placeholder="all_canotModify">
+							</div>
+						</div>
+					</form>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary " onclick="add_technology()"><span  data-locale="all_OK">确定</span><span class="lang_en sml">(OK)</span></button>
+						<button type="cancel" class="btn btn-primary " data-dismiss="modal"><span data-locale="all_close">关闭</span><span class="lang_en sml">(Close)</span></button>
+					</div>			
+				</div>
+			</div>
+		</div>
+	</div>
+
+    <div class="modal" id="modify_technology_data" tabindex="-1" role="dialog" aria-labelledby="modifyDataLable" aria-hidden="true" data-backdrop="static">
+		<div class="modal-dialog">
+			<div class="modal-content" style="width: 600px;">
+				<div class="modal-header">
+					<h3>修改技能名称</h3>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				</div>
+				<div class="modal-body" style="padding:20px 40px 20px 40px;">
+					<form class="form-horizontal" role="form" autocomplete="off" id="flow_technology_form">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">技能名称:</label>
+							<div class="col-sm-8">
+								<input type="text" id="modifytechnologyname" class="form-control" readonly="true">
+							</div>
+						</div>
+						<p style="text-align:center">Tips:此处暂不支持修改</p>
+						<div class="modal-footer">
+                            <button type="button" class="btn btn-primary " onclick="modify_technology()">确定</button>
+						    <button type="cancel" class="btn btn-primary " data-dismiss="modal">关闭</button>
+						</div>
+					</form>	
+				</div>
+			</div>
+		</div>
+	</div>
+<!-- </div> -->

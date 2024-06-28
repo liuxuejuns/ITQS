@@ -1,0 +1,47 @@
+{% load static %}
+<!-- <div class="content-wrapper" style="margin-left: 20px;"> -->
+    <div class="manage_data_container">
+        <div id="qBankHistoryToolbar">
+            <div id="Excell">
+                <a download="qBank" href="#" onclick="return ExcellentExport.excel(this, 'qBankmHistoryTable', 'Sheet Name Here');">
+                    <span data-locale="qBankHistroy_export">一键导出记录</span>
+                    <img src="{% static 'common/img/export.png' %}"/>
+                </a>
+            </div><br>
+            <div id="showBank">
+                <strong>
+                    <span data-locale="choiceQuestion_questionBank">题库</span>
+					<span class="lang_en sml">Question Bank</span>
+                </strong>
+                <strong class="exam">(
+					<span data-locale="choiceQuestion_examBank">考核</span>
+					<span class="lang_en sml">Exam</span>):
+				</strong>
+                <strong class="practice">(
+					<span data-locale="choiceQuestion_practiceBank">训练</span>
+					<span class="lang_en sml">Practice</span>):
+				</strong>
+                <span>{{name}}</span>
+                <strong> / 
+                    <span data-locale="all_ophist">操作历史</span>
+                    <span class="lang_en sml">Operation History</span>
+                </strong>
+                <input id="qBankHistoryQBID" value="{{questionBankID}}" style="display: none;"/>
+                <input id="qBankHistoryName" value="{{name}}" style="display: none;"/>
+                <input id="qBankHistoryIsExercised" value="{{isExercised}}" style="display: none;"/>
+            </div>
+        </div>
+        <table id="qBankmHistoryTable" 
+            data-toolbar="#qBankHistoryToolbar" 
+            data-search="true" 
+            data-show-toggle="true"
+            data-show-fullscreen="true" 
+            data-click-to-select="true" 
+            data-show-pagination-switch="true" 
+            data-pagination="true" 
+            data-id-field="id"
+            data-page-list="[10, 25, 50, 100, all]" 
+            data-show-footer="true">
+        </table>
+    </div>
+<!-- </div> -->

@@ -1,0 +1,27 @@
+{% load static %}
+	<!-- <div id="train_record_export"><a download="培训记录" href="#" onclick="return ExcellentExport.excel(this, 'train_record_table', 'Sheet Name Here');">一键导出记录<img src="../../static/common/img/export.png"/> </a></div> -->
+<!-- <div class="content-wrapper"style="margin-left: 20px;"> -->
+	<div class="train_records_container">
+		<div id="toolbar_exam_recoder">
+			<div id="train_record_export">
+				<a download="考核记录" href="#" onclick="return ExcellentExport.excel(this, 'my_exam_recoder_table', 'Sheet Name Here');">
+					<span data-locale="exam_records_export">一键导出考核记录</span>
+					<span class="lang_en sml">Export Exam Records</span>
+					<img src="../../static/common/img/export.png"/>
+				</a>
+			</div>
+		</div>
+		<table
+		  id="my_exam_recoder_table"
+		  data-toolbar="#toolbar_exam_recoder"
+		  data-search="true"
+		  data-show-toggle="true"
+		  data-show-fullscreen="true"
+		  data-click-to-select="true"
+		  data-show-pagination-switch="true"
+		  data-pagination="true"
+		  data-id-field="id"
+		  data-page-list="[10, 25, 50, 100, all]">
+		</table>
+	</div>
+<!-- </div> -->

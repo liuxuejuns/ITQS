@@ -1,0 +1,223 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=11" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'common/css/self/login_atqs.css'%}"
+    />
+    <link
+      rel="stylesheet"
+      href="{% static 'common/css/tempusdominus-bootstrap-4.min.css'%}"
+    />
+    <link
+      rel="stylesheet"
+      href="{% static 'bootstrap-3.3.7-dist/css/bootstrap-theme.css'%}"
+    />
+    <title>Intelligent Training Quiz System</title>
+    <script src="{% static 'common/js/jquery.min.js'%}"></script>
+    <script src="{% static 'common/js/jquery-ui.min.js'%}"></script>
+    <script src="{% static 'common/js/daterangepicker.js'%}"></script>
+    <script src="{% static 'common/js/jquery.overlayScrollbars.min.js'%}"></script>
+    <script src="{% static 'common/js/adminlte.js'%}"></script>
+    <script src="{% static 'jquery/jquery.i18n.properties.js'%}"></script>
+    <script src="{% static 'common/js/slef/language_extensions.js'%}"></script>
+  </head>
+
+  <body
+    background="{% static 'common/img/bg1.jpg' %}"
+    style="
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+      background-attachment: fixed;
+    "
+  >
+    <script type="text/javascript">
+      document.onkeydown = cdk;
+      function cdk() {
+        if (event.keyCode == 13) {
+          login_index();
+        }
+      }
+      function login_index() {
+        var StaffID_login = $("input[id='StaffID']").val();
+        var Password_login = $("input[id='Password']").val();
+
+        if (StaffID_login == "" || Password_login == "") {
+          alert("不允许存在空项" + "\n" + "Null entries are not allowed");
+          return;
+        }
+        var data = {
+          StaffID_login: StaffID_login,
+          Password_login: Password_login,
+        };
+
+        $.ajax({
+          type: "POST",
+          url: "website/login_index",
+          data: data,
+          dataType: "json",
+          success: function (data) {
+            if (data.result == "true") {
+              console.log("登录成功获取到信息：", data);
+              var name = data.name;
+              var S_StaffID = data.S_StaffID;
+              var S_Site = data.S_Site;
+              var S_Plant = data.S_Plant;
+              var S_Role = data.S_Role;
+              var S_Lang = data.S_Lang;
+              localStorage.setItem("Staff_Name", name);
+              localStorage.setItem("Staff_ID", S_StaffID);
+              localStorage.setItem("Staff_Site", S_Site);
+              localStorage.setItem("Staff_Plant", S_Plant);
+              localStorage.setItem("Staff_Role", S_Role);
+              localStorage.setItem("Staff_Lang", S_Lang);
+              var my_lang = data.S_Lang;
+              var lang;
+              switch (my_lang) {
+                default:
+                  lang = "zh";
+                  break;
+                case "English":
+                  lang = "en";
+                  break;
+                case "Chinese":
+                  lang = "zh";
+                  break;
+                case "Vietnamese":
+                  lang = "vi";
+              }
+              if ($("#lang").val() != lang) {
+                // alert(`因当前选择语言与您的注册语言不符，现已帮您转换为注册语言。`);
+                loadProperties(lang);
+                $("#lang").val(lang);
+                sessionStorage.setItem("lang", $("#lang").val());
+              }
+              if (S_Role === "SuperAdmin") {
+                window.location.href = "/website/SuperAdminIndex";
+              } else {
+                window.location.href = "/website/index";
+              }
+              $("#StaffID").val("");
+              $("#Password").val("");
+            } else if (data.result == "false") {
+              alert(
+                "登录失败，请检查信息填写是否正确" +
+                  "\n" +
+                  "Fail to login, please check the user ID and password is correct!"
+              );
+            }
+          },
+        });
+      }
+
+      function register() {
+        window.location.href = "/website/register";
+      }
+    </script>
+    <div class="header">
+      <img
+        src="{% static 'common/img/wistron_logo.png' %}"
+        alt="Smiley face"
+        width="112"
+        height="26"
+      />
+      <span style="font-size: 21px; margin-left: 30px; font-weight: bold"
+        >Intelligent Training Quiz System</span
+      >
+    </div>
+    <div id="loginDiv">
+      <table style="align-items: auto; margin: auto">
+        <tr>
+          <th colspan="2">
+            <h1
+              style="
+                text-align: center;
+                display: inline-block;
+                color: aliceblue;
+                color: #000000;
+              "
+              data-locale="login_loginTitle"
+            >
+              请登录
+            </h1>
+            <span class="lang_en">Login</span>
+          </th>
+        </tr>
+        <tr>
+          <td style="text-align: center">
+            <p data-locale="all_id" style="display: inline-block">工号</p>
+            <span class="lang_en sml">Staff ID</span>
+          </td>
+          <td style="text-align: center">
+            <input
+              type="text"
+              id="StaffID"
+              placeholder="工号"
+              data-placeholder="all_idPh"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align: center">
+            <p data-locale="all_pwd" style="display: inline-block">密码</p>
+            <span class="lang_en sml">Password</span>
+          </td>
+          <td style="text-align: center">
+            <input
+              type="password"
+              placeholder="密码"
+              data-placeholder="all_pwdPh"
+              id="Password"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align: center">
+            <button
+              type="button"
+              class="btn btn-info"
+              style="
+                margin: 20px;
+                min-width: 100px;
+                border-radius: 10px;
+                height: 33px;
+              "
+              onclick="login_index()"
+            >
+              <span data-locale="login_login">登录</span
+              ><span class="lang_en sml">(Login)</span>
+            </button>
+          </td>
+          <td style="text-align: center">
+            <button
+              type="button"
+              class="btn btn-info"
+              style="
+                margin: 20px;
+                min-width: 100px;
+                border-radius: 10px;
+                height: 33px;
+              "
+              onclick="register()"
+            >
+              <span data-locale="login_register">注册</span
+              ><span class="lang_en sml">(Register)</span>
+            </button>
+          </td>
+          <td style="text-align: center">
+            <select name="" style="min-width: 123px" id="lang">
+              <option value="zh">中文</option>
+              <option value="en">English</option>
+              <option value="vi">Tiếng Việt</option>
+              <option value="bo" data-locale="zh_en">中英对照</option>
+            </select>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </body>
+</html>

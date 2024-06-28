@@ -1,0 +1,723 @@
+{% load static %}
+<!-- <div class="content-wrapper" style="margin-left: 20px;"> -->
+<div class="exam_container">
+  <div id="exam_toolbar">
+    <button
+      id="addExam"
+      class="btn btn-primary"
+      data-toggle="modal"
+      data-target="#add_exam"
+    >
+      <i class="fa fa-plus-circle"></i>
+      <span data-locale="choiceQuestion_addQ">添加技能考题</span>
+      <p class="lang_en sml">Add Questions</p>
+    </button>
+    <button id="remove_exam" class="btn btn-danger" onclick="check_del()">
+      <i class="fa fa-trash"></i>
+      <span data-locale="choiceQuestion_delQs">删除技能考题</span>
+      <p class="lang_en sml">Delete Questions</p>
+    </button>
+    <button
+      id="remove_exam_by_book"
+      class="btn btn-danger"
+      onclick="check_del_by_book()"
+    >
+      <i class="fa fa-trash"></i>
+      <span data-locale="choiceQuestion_delQs_book">根据书籍删除技能考题</span>
+      <p class="lang_en sml">Delete Questions by Book</p>
+    </button>
+    <a
+      href="#"
+      onclick="searchQBankHistory('{{questionBankID}}','{{name}}','{{isExercised}}')"
+    >
+      <button id="exam_history" class="btn btn-primary">
+        <i class="fa fa-search"></i>
+        <span data-locale="choiceQuestion_modifyHist"
+          >查看技能考题修改历史</span
+        >
+        <p class="lang_en sml">Modification History</p>
+      </button>
+    </a>
+    <input id="bankName" name="bankName" value="{{name}}" type="hidden" />
+    <input
+      id="isExercised"
+      name="isExercised"
+      value="{{isExercised}}"
+      type="hidden"
+    />
+    <div id="showTest" style="margin-top: 10px; margin-bottom: 0px">
+      <strong>
+        <span data-locale="choiceQuestion_questionBank">题库</span>
+        <span class="lang_en sml">Question Bank</span>
+      </strong>
+      <strong class="exam"
+        >(
+        <span data-locale="choiceQuestion_examBank">考核</span>
+        <span class="lang_en sml">Exam</span>):
+      </strong>
+      <strong class="practice"
+        >(
+        <span data-locale="choiceQuestion_practiceBank">训练</span>
+        <span class="lang_en sml">Practice</span>):
+      </strong>
+      <span>{{name}}</span>
+    </div>
+  </div>
+  <table
+    id="exam_table"
+    data-toolbar="#exam_toolbar"
+    data-search="true"
+    data-show-toggle="true"
+    data-show-fullscreen="true"
+    data-side-pagination="client"
+    data-show-pagination-switch="true"
+    data-pagination="true"
+    data-id-field="id"
+    data-page-list="[10, 25, 50, 100, all]"
+    data-show-footer="true"
+  ></table>
+</div>
+<div
+  class="modal"
+  id="add_exam"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="add_examLable"
+  aria-hidden="true"
+  data-backdrop="static"
+>
+  <div class="modal-dialog">
+    <div class="modal-content" style="width: 600px">
+      <div class="modal-header">
+        <h3>
+          <span data-locale="choiceQuestion_addQ">添加技能考题</span>
+          <span class="lang_en sml">Add Questions</span>
+        </h3>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-hidden="true"
+        >
+          ×
+        </button>
+      </div>
+      <div class="modal-body" style="padding: 20px 40px 20px 40px">
+        <form
+          class="form-horizontal"
+          role="form"
+          autocomplete="off"
+          method="post"
+          id="add_exam_form"
+        >
+          <div class="form-group" hidden>
+            <label class="col-sm-4 control-label">
+              <span data-locale="choiceQuestion_questionBankNum">题库编号</span>
+              <span class="lang_en sml">Teaching Material Bank ID</span>
+            </label>
+            <div class="col-sm-8">
+              <input
+                type="text"
+                id="newQuestionBankID"
+                readonly="true"
+                value="{{questionBankID}}"
+                class="form-control"
+              />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-4 control-label">
+              <span data-locale="choiceQuestion_book">适用教材</span>
+              <span class="lang_en sml">Teaching Material</span>
+            </label>
+            <div class="col-sm-8">
+              <select id="newBookID" class="form-control">
+                <option value="">
+                  <span data-locale="choiceQuestion_chooseBook">请选择</span>
+                  <span class="lang_en sml">Choose Teaching Material</span>
+                </option>
+                {% for book in books %}
+                <option value="{{book.BookID}}">{{book.Name}}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-4 control-label">
+              <span data-locale="choiceQuestion_QType">考题类型</span>
+              <span class="lang_en sml">Question Type</span>
+            </label>
+            <div class="col-sm-8">
+              <input
+                type="text"
+                id="newType"
+                value="Single"
+                readonly="true"
+                class="form-control"
+              />
+            </div>
+          </div>
+          <div class="form-group" style="margin-bottom: 0px">
+            <label class="col-sm-4 control-label">
+              <span data-locale="choiceQuestion_Qfile">上传考题文件</span>
+              <span class="lang_en sml">File</span>
+            </label>
+            <div class="col-sm-8">
+              <label for="newContent" type="button" style="padding: 5px">
+                <span data-locale="all_chooseFile">选择文件</span>
+                <span class="lang_en sml">Choose File</span>
+              </label>
+              <input
+                type="file"
+                accept=".pptx"
+                id="newContent"
+                style="display: none"
+                onchange="show_name()"
+              />
+              <span id="show_name"
+                ><span
+                  data-locale="choiceQuestion_noFiles"
+                  title="Please Select File"
+                  >未选择文件</span
+                ></span
+              >
+              <p style="font-size: 10pt; margin-top: 0px">
+                <span
+                  data-locale="choiceQuestion_fileTips"
+                  style="color: red"
+                  title=".pptx only"
+                  >只能选择.pptx文件</span
+                >
+                <a
+                  class="btn"
+                  href="{% static 'common/file/技能考题示例.pptx' %}"
+                  data-options="plain:true"
+                  style="
+                    border: 1px solid rgb(54, 204, 93);
+                    background-color: #fff;
+                    color: rgb(54, 204, 93);
+                    padding: 0 3px;
+                  "
+                >
+                  <span>
+                    <span
+                      data-locale="choiceQuestion_fileTemplate"
+                      title="Question Template"
+                      >下载考题示例</span
+                    >
+                  </span>
+                  <img
+                    src="/static/common/img/import_green.png"
+                    style="width: 20px; height: 20px"
+                  />
+                </a>
+              </p>
+              <!-- <p
+									style="display: inline;border: 4px solid rgb(54, 204, 93);margin-left: 10px;font-size: 12pt;">
+								</p> -->
+            </div>
+          </div>
+          <div class="form-group" hidden>
+            <label class="col-sm-4 control-label" data-locale="all_creatorID"
+              >创建人工号:</label
+            >
+            <div class="col-sm-8">
+              <input
+                type="text"
+                id="newCreatorID"
+                readonly="true"
+                class="form-control"
+              />
+            </div>
+          </div>
+          <div class="form-group" hidden>
+            <label class="col-sm-4 control-label" data-locale="all_creatorName"
+              >创建人名字:</label
+            >
+            <div class="col-sm-8">
+              <input
+                type="text"
+                id="newCreatorName"
+                readonly="true"
+                class="form-control"
+              />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-4 control-label">
+              <span data-locale="all_reason">理由</span>
+              <span class="lang_en sml">Reason</span>
+            </label>
+            <div class="col-sm-8">
+              <textarea class="form-control" rows="3" id="newReason"></textarea>
+            </div>
+          </div>
+        </form>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-primary"
+            onclick="add_choiceQuestion()"
+          >
+            <span data-locale="all_OK">确定</span
+            ><span class="lang_en sml">(OK)</span>
+          </button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal">
+            <span data-locale="all_close">关闭</span
+            ><span class="lang_en sml">(Close)</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal"
+  id="del_exam_by_book"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="add_examLable"
+  aria-hidden="true"
+  data-backdrop="static"
+>
+  <div class="modal-dialog">
+    <div class="modal-content" style="width: 600px">
+      <div class="modal-header">
+        <h3>
+          <span data-locale="choiceQuestion_delQs_book"
+            >根据书籍删除技能考题</span
+          >
+          <p class="lang_en sml">Delete Questions by Book</p>
+        </h3>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-hidden="true"
+        >
+          ×
+        </button>
+      </div>
+      <div class="modal-body" style="padding: 20px 40px 20px 40px">
+        <form
+          class="form-horizontal"
+          role="form"
+          autocomplete="off"
+          method="post"
+          id="add_exam_form"
+        >
+          <div class="form-group" hidden>
+            <label class="col-sm-4 control-label">
+              <span data-locale="choiceQuestion_questionBankNum">题库编号</span>
+              <span class="lang_en sml">Teaching Material Bank ID</span>
+            </label>
+            <div class="col-sm-8">
+              <input
+                type="text"
+                id="newQuestionBankID"
+                readonly="true"
+                value="{{questionBankID}}"
+                class="form-control"
+              />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-4 control-label">
+              <span data-locale="choiceQuestion_book">选择教材</span>
+              <span class="lang_en sml">Teaching Material</span>
+            </label>
+            <div class="col-sm-8">
+              <select id="deleteBookmaterial" class="form-control">
+                <option value="">
+                  <span data-locale="choiceQuestion_chooseBook">请选择</span>
+                  <span class="lang_en sml">Choose Teaching Material</span>
+                </option>
+                {% for book in books %}
+                <option value="{{book.BookID}}">{{book.Name}}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-4 control-label">
+                <span data-locale="all_reason">理由</span>
+                <span class="lang_en sml">Reason</span>
+              </label>
+              <div class="col-sm-8">
+                <textarea
+                  class="form-control"
+                  id="delReason_book"
+                  rows="3"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+        </form>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-danger"
+            onclick="delete_by_book()"
+          >
+            <span data-locale="sure_delete">确定删除</span
+            ><span class="lang_en sml">(Delete)</span>
+          </button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal">
+            <span data-locale="all_close">关闭</span
+            ><span class="lang_en sml">(Close)</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 不能使用修改功能，因为修改后该题的图片路径会改变，导致Tab ExamedChoiceQuestion内找不到该图片 -->
+{% comment %}
+<div
+  class="modal"
+  id="modify_exam"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="modifyExamLable"
+  aria-hidden="true"
+  data-backdrop="static"
+>
+  <div class="modal-dialog">
+    <div class="modal-content" style="width: 600px">
+      <div class="modal-header">
+        <h3>修改技能考题</h3>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-hidden="true"
+        >
+          ×
+        </button>
+      </div>
+      <div class="modal-body" style="padding: 20px 40px 20px 40px">
+        <form
+          class="form-horizontal"
+          role="form"
+          autocomplete="off"
+          method="post"
+          id="modify_exam_form"
+        >
+          <div class="form-group" hidden>
+            <label class="col-sm-4 control-label">题库编号:</label>
+            <div class="col-sm-8">
+              <input
+                type="text"
+                id="bankID"
+                name="bankID"
+                value="{{questionBankID}}"
+                readonly="true"
+                class="form-control"
+              />
+            </div>
+          </div>
+          <div class="form-group" hidden>
+            <label class="col-sm-4 control-label">题库名:</label>
+            <div class="col-sm-8">
+              <input
+                type="text"
+                id="bankName"
+                name="bankName"
+                value="{{name}}"
+                readonly="true"
+                class="form-control"
+              />
+            </div>
+          </div>
+          <div class="form-group" hidden>
+            <label class="col-sm-4 control-label">是否训练库:</label>
+            <div class="col-sm-8">
+              <input
+                type="text"
+                id="isExercised"
+                name="isExercised"
+                value="{{isExercised}}"
+                readonly="true"
+                class="form-control"
+              />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-4 control-label">考题编号:</label>
+            <div class="col-sm-8">
+              <input
+                type="text"
+                id="choiceQuestionID"
+                name="ChoiceQuestionID"
+                readonly="true"
+                class="form-control"
+              />
+            </div>
+          </div>
+          <div class="form-group" hidden>
+            <label class="col-sm-4 control-label">科目:</label>
+            <div class="col-sm-8">
+              <input
+                type="text"
+                id="modifySubject"
+                name="Subject"
+                class="form-control"
+              />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-4 control-label">考题类型:</label>
+            <div class="col-sm-8">
+              <input
+                type="text"
+                id="modifyType"
+                readonly="true"
+                name="Type"
+                class="form-control"
+              />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-4 control-label">适用教材:</label>
+            <div class="col-sm-8">
+              <select id="modifyBID" name="modifyBID" class="form-control">
+                <!-- <option value="">请选择</option> -->
+                {% for book in books %}
+                <option value="{{book.BookID}}">{{book.Name}}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+          <div class="form-group" hidden>
+            <label class="col-sm-4 control-label">考题内容:</label>
+            <div class="col-sm-8">
+              <input
+                type="text"
+                id="modifyContent"
+                name="Content"
+                readonly="true"
+                class="form-control"
+              />
+            </div>
+          </div>
+          <div class="form-group" hidden>
+            <label class="col-sm-4 control-label">创建人工号:</label>
+            <div class="col-sm-8">
+              <input
+                type="text"
+                id="modifyCreatorID"
+                name="creator_id"
+                readonly="true"
+                class="form-control"
+              />
+            </div>
+          </div>
+          <div class="form-group" hidden>
+            <label class="col-sm-4 control-label">创建人名字:</label>
+            <div class="col-sm-8">
+              <input
+                type="text"
+                id="modifyCreatorName"
+                name="creator_name"
+                readonly="true"
+                class="form-control"
+              />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-4 control-label">理由:</label>
+            <div class="col-sm-8">
+              <textarea
+                class="form-control"
+                rows="3"
+                id="modifyReason"
+                name="modify_reason"
+              ></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-primary"
+              onclick="modify_choiceQuestion()"
+            >
+              确定
+            </button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal">
+              关闭
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endcomment %}
+
+<!-- 删除技能考题模态框 -->
+<div
+  class="modal"
+  id="del_choiceQuestion"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="del_pageLable"
+  aria-hidden="true"
+  data-backdrop="static"
+>
+  <div class="modal-dialog">
+    <div class="modal-content" style="width: 600px">
+      <div class="modal-header">
+        <h3>
+          <span data-locale="choiceQuestion_delQ">删除技能考题</span>
+          <span class="lang_en" style="font-size: medium"
+            >Delete Questions</span
+          >
+        </h3>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-hidden="true"
+        >
+          ×
+        </button>
+      </div>
+      <div class="modal-body" style="padding: 20px 40px 20px 40px">
+        <form
+          class="form-horizontal"
+          role="form"
+          autocomplete="off"
+          enctype="multipart/form-data"
+          method="post"
+        >
+          {% csrf_token %}
+          <div class="form-group" hidden>
+            <label
+              class="col-sm-4 control-label"
+              data-locale="choiceQuestion_QNum"
+              >考题编号:</label
+            >
+            <div class="col-sm-8">
+              <input
+                type="text"
+                id="ChoiceQuestionID"
+                readonly="true"
+                class="form-control"
+                name="choiceQuestionID"
+              />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-4 control-label">
+              <span data-locale="all_reason">理由</span>
+              <span class="lang_en sml">Reason</span>
+            </label>
+            <div class="col-sm-8">
+              <textarea
+                class="form-control"
+                id="delReason"
+                rows="3"
+                name="delReason"
+              ></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-primary"
+              onclick="delete_choiceQuestion()"
+            >
+              <span data-locale="all_OK">确定</span
+              ><span class="lang_en sml">(OK)</span>
+            </button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal">
+              <span data-locale="all_close">关闭</span
+              ><span class="lang_en sml">(Close)</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 批量删除技能考题模态框 -->
+<div
+  class="modal"
+  id="del_cQuestions"
+  tabindex="-1"
+  role="dialog"
+  aria-hidden="true"
+  data-backdrop="static"
+>
+  <div class="modal-dialog">
+    <div class="modal-content" style="width: 600px">
+      <div class="modal-header">
+        <h3>
+          <span data-locale="choiceQuestion_delQs">批量删除技能考题</span>
+          <span class="lang_en" style="font-size: medium"
+            >Delete Questions</span
+          >
+        </h3>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-hidden="true"
+        >
+          ×
+        </button>
+      </div>
+      <div class="modal-body" style="padding: 20px 40px 20px 40px">
+        <form class="form-horizontal" role="form" autocomplete="off">
+          <div class="form-group">
+            <label class="col-sm-4 control-label">
+              <span data-locale="all_reason">理由</span>
+              <span class="lang_en sml">Reason</span>
+            </label>
+            <div class="col-sm-8">
+              <textarea class="form-control" id="delReason" rows="3"></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-primary"
+              onclick="del_choiceQuestions()"
+            >
+              <span data-locale="all_OK">确定</span
+              ><span class="lang_en sml">(OK)</span>
+            </button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal">
+              <span data-locale="all_close">关闭</span
+              ><span class="lang_en sml">(Close)</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- </div> -->
+
+<!-- 点击放大图片 -->
+<div
+  id="outerdiv"
+  style="
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    display: none;
+  "
+>
+  <div id="innerdiv" style="position: absolute">
+    <img id="max_img" style="border: 5px solid #fff" src="" />
+  </div>
+</div>

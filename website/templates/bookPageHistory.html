@@ -1,0 +1,36 @@
+{% load static %}
+<!-- <div class=" content-wrapper" style="margin-left: 20px;"> -->
+<div class="manage_data_container">
+    <div id="bookPageHistoryToolbar">
+        <div id="Excell">
+            <a download="Page数据" href="#"
+                onclick="return ExcellentExport.excel(this, 'bookPageHistoryTable', 'Sheet Name Here');">
+                <span data-locale="bookPageHistroy_export">一键导出记录</span>
+                <span class="lang_en sml">Export Records</span>
+                <img src="{% static 'common/img/export.png' %}" />
+            </a>
+        </div>
+        <div id="showTest">
+            <span style="margin-top: 10px;margin-bottom: 0px;">
+                <strong>
+                    <span data-locale="bookPage_bank">技能教材库</span>
+                    <span class="lang_en sml">Teaching Material Bank</span>
+                    <input id="bookPageTrainingHistBookID" value="{{bookid}}" style="display: none;"/>
+                </strong>:{{book.TrainingBankName}}
+                <strong>/
+                    <span data-locale="bookPage_book">教材</span>
+                    <span class="lang_en sml">Teaching Material</span>:
+                </strong>{{book.Name}}
+                <strong> /
+                    <span data-locale="all_ophist">操作历史</span>
+                    <span class="lang_en sml">Operation History</span>
+                </strong>
+            </span>
+        </div>
+    </div>
+    <table id="bookPageHistoryTable" data-toolbar="#bookPageHistoryToolbar" data-search="true" data-show-toggle="true"
+        data-show-fullscreen="true" data-click-to-select="true" data-show-pagination-switch="true"
+        data-pagination="true" data-id-field="id" data-page-list="[10, 25, 50, 100, all]" data-show-footer="true">
+    </table>
+</div>
+<!-- </div> -->

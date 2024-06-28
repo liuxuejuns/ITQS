@@ -1,0 +1,297 @@
+{% load static %}
+<!-- <div class="content-wrapper"style="margin-left: 20px;"> -->
+	<div class="manage_data_container">
+		<div id="toolbar_trainingbank">
+		  <button id="add" class="btn btn-primary" data-toggle="modal" data-target="#add_trainingbank_data">
+		    <i class="fa fa-plus-circle"></i>
+			<span data-locale="trainingbank_addRoleTitle">创建教材库和角色</span>
+			<span class="lang_en sml">Add Teaching Material Bank and Role</span>
+		  </button>
+		</div>
+		<table
+		  id="my_trainingbank_table"
+		  data-toolbar="#toolbar_trainingbank"
+		  data-search="true"
+		  data-show-toggle="true"
+		  data-show-fullscreen="true"
+		  data-click-to-select="true"
+		  data-show-pagination-switch="true"
+		  data-pagination="true"
+		  data-id-field="id"
+		  data-page-list="[10, 25, 50, 100, all]">
+		  <!-- data-show-footer="true"> -->
+		</table>
+	</div>
+	<div class="modal" id="add_trainingbank_data" tabindex="-1" role="dialog" aria-labelledby="addDataLable" aria-hidden="true" data-backdrop="static">
+		<div class="modal-dialog">
+			<div class="modal-content" style="width: 600px;">
+				<div class="modal-header">
+					<h3>
+						<span data-locale="trainingbank_addRoleTitle">添加教材库及角色</span>
+						<span class="lang_en" style="font-size: medium;">Add Teaching Material Bank and Role</span>
+					</h3>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				</div>
+				<div class="modal-body" style="padding:20px 40px 20px 40px;">
+					<form class="form-horizontal" role="form" autocomplete="off" method="post" id="trainingbank_Form">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">
+								<span data-locale="trainingbank_thTitle2">技能教材库名称</span>
+								<span class="lang_en sml">Teaching Material Bank</span>
+							</label>
+							<div class="col-sm-8">
+								<select id="newtrainingName" class="form-control">
+									<option value=""></option>
+									{% for technology in technologys %}
+									<option value="{{technology.Name}}">{{technology.Name}}</option>
+									{% endfor %}
+								</select>
+								<!-- <input type="text" id="newtrainingName" class="form-control" placeholder="确定后无法修改"> -->
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label">
+								<span data-locale="trainingbank_thTitle3">教材管理员</span>
+								<span class="lang_en sml">Teaching Material Manager</span>
+							</label>
+							<div class="col-sm-7">
+								<input type="text" readonly="true" id="newtrainingmaterialmaker" class="form-control" placeholder="输入为工号且使用‘,’分隔" data-placeholder="all_split">
+							</div>
+							<div class="col-sm-1">
+								<button class="btn btn-default" type="button" data-toggle="modal" data-target="#add_trainingmaterialmaker" onclick="add_trainingmaterialmaker()">&gt;</button>
+							</div>
+						</div>
+                        <div class="form-group">
+							<label class="col-sm-4 control-label">
+								<span data-locale="trainingbank_thTitle4">训练员</span>
+								<span class="lang_en sml">Trainer</span>
+							</label>
+							<div class="col-sm-7">
+								<input type="text" readonly="true" id="newtrainer" class="form-control" placeholder="输入为工号且使用‘,’分隔" data-placeholder="all_split">
+							</div>
+							<div class="col-sm-1">
+								<button class="btn btn-default" type="button" data-toggle="modal" data-target="#add_newtrainer" onclick="add_newtrainer()">&gt;</button>
+							</div>
+						</div>
+					</form>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary " onclick="add_trainingbank()"><span data-locale="all_OK">确定</span><span class="lang_en sml">(OK)</span></button>
+						<button type="cancel" class="btn btn-primary " data-dismiss="modal"><span data-locale="all_close">关闭</span><span class="lang_en sml">(Close)</span></button>
+					</div>			
+				</div>
+			</div>
+		</div>
+	</div>
+    <div class="modal" id="modify_trainingbank_data" tabindex="-1" role="dialog" aria-labelledby="modifyDataLable" aria-hidden="true" data-backdrop="static">
+		<div class="modal-dialog">
+			<div class="modal-content" style="width: 600px;">
+				<div class="modal-header">
+					<h3>
+						<span data-locale="trainingbank_modifyRoleTitle">修改教材库及角色</span>
+						<span class="lang_en" style="font-size: medium;">Edit Teaching Material Bank and Role</span>
+					</h3>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				</div>
+				<div class="modal-body" style="padding:20px 40px 20px 40px;">
+					<form class="form-horizontal" role="form" autocomplete="off" id="flow_trainingbank_form">
+						<input type="text" readonly="true" id="trainingbankid" style="display: none;">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">
+								<span data-locale="trainingbank_thTitle2">技能教材库名称</span>
+								<span class="lang_en sml">Teaching Material Bank</span>
+							</label>
+							<div class="col-sm-8">
+								<input type="text" readonly="true" id="modifytrainingName" class="form-control">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label">
+								<span data-locale="trainingbank_thTitle3">教材管理员</span>
+								<span class="lang_en sml">Teaching Material Manager</span>
+							</label>
+							<div class="col-sm-7">
+								<input type="text" readonly="true" id="modifytrainingmaterialmaker" class="form-control" placeholder="输入为工号且使用‘,’分隔" data-placeholder="all_split">
+							</div>
+							<div class="col-sm-1">
+								<button class="btn btn-default" type="button" data-toggle="modal" data-target="#modify_trainingmaterialmaker" onclick="modify_maker()">&gt;</button>
+							</div>
+						</div>
+                        <div class="form-group">
+							<label class="col-sm-4 control-label">
+								<span data-locale="trainingbank_thTitle4">训练员</span>
+								<span class="lang_en sml">Trainer</span>
+							</label>
+							<div class="col-sm-7">
+								<input type="text" readonly="true" id="modifytrainer" class="form-control" placeholder="输入为工号且使用‘,’分隔" data-placeholder="all_split">
+							</div>
+							<div class="col-sm-1">
+								<button class="btn btn-default" type="button" data-toggle="modal" data-target="#modify_trainer" onclick="modify_trainer()">&gt;</button>
+							</div>
+						</div>
+						<div class="modal-footer">
+                            <button type="button" class="btn btn-primary " onclick="modify_trainingbank()"><span data-locale="all_OK">确定</span><span class="lang_en sml">(OK)</span></button>
+						    <button type="cancel" class="btn btn-primary " data-dismiss="modal"><span data-locale="all_close">关闭</span><span class="lang_en sml">(Close)</span></button>
+						</div>
+					</form>	
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal" id="modify_trainingmaterialmaker" tabindex="-1" role="dialog" aria-labelledby="modifyDataLable" aria-hidden="true" data-backdrop="static">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4>
+						<span data-locale="trainingbank_modifyBookManager">修改教材管理员</span>
+						<span class="lang_en" style="font-size: medium;">Edit Teaching Material Manager</span>
+					</h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<table class="modal-body" style="width: auto;margin: auto;">
+					<tr>
+						<td class="centent_trainingmaterialmaker" style="margin:8px;">
+							<select multiple="multiple" id="select1" class="form-control" style="width:220px;height:160px;">
+								{% for user in users %}
+								<option value="{{user.StaffID}}">{{user.StaffID}} - {{user.StaffName}}</option>
+								{% endfor %}
+							</select>
+							<!-- <div>
+								<span id="add_one" >&gt;&gt;</span>
+								<span id="add_all" >全部添加到右边&gt;&gt;</span>
+							</div> -->
+						</td>
+						<td style="margin:5px;">
+							<span id="add_maker" style="background:#898989;cursor:pointer;font-size:8px;color:white;display:block;margin:2px 2px;padding:4px 10px;">&gt;&gt;</span></br>
+							<span id="remove_maker" style="background:#898989;cursor:pointer;font-size:8px;color:white;display:block;margin:2px 2px;padding:4px 10px;">&lt;&lt;</span>
+						</td>
+					
+						<td class="centent_trainingmaterialmaker" style="margin:8px;">
+							<select multiple="multiple" id="select2" class="form-control" style="width: 220px;height:160px;">
+								
+							</select>
+							<!-- <div>
+								<span id="remove_one">&lt;&lt;</span>
+								<span id="remove_all">&lt;&lt;全部删除到左边</span>
+							</div> -->
+						</td>
+					</tr>
+				</table>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary " onclick="sure_maker()"><span data-locale="all_OK">确定</span><span class="lang_en sml">(OK)</span></button>
+					<button type="cancel" class="btn btn-primary " data-dismiss="modal"><span data-locale="all_close">关闭</span><span class="lang_en sml">(Close)</span></button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal" id="modify_trainer" tabindex="-1" role="dialog" aria-labelledby="modifyDataLable" aria-hidden="true" data-backdrop="static">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4>
+						<span data-locale="trainingbank_modifyTrainer">修改训练员</span>
+						<span class="lang_en" style="font-size: medium;">Edit Trainer</span>
+					</h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<table class="modal-body" style="width: auto;margin: auto;">
+					<tr>
+						<td class="centent_trainer" style="margin:8px;">
+							<select multiple="multiple" id="select3" class="form-control" style="width:220px;height:160px;">
+								{% for user in users %}
+								<option value="{{user.StaffID}}">{{user.StaffID}} - {{user.StaffName}}</option>
+								{% endfor %}
+							</select>
+						</td>
+						<td style="margin:5px;">
+							<span id="add_trainer" style="background:#898989;cursor:pointer;font-size:8px;color:white;display:block;margin:2px 2px;padding:4px 10px;">&gt;&gt;</span></br>
+							<span id="remove_trainer" style="background:#898989;cursor:pointer;font-size:8px;color:white;display:block;margin:2px 2px;padding:4px 10px;">&lt;&lt;</span>
+						</td>
+						<td class="centent_trainer" style="margin:8px;">
+							<select multiple="multiple" id="select4" class="form-control" style="width: 220px;height:160px;">
+
+							</select>
+						</td>
+					</tr>
+				</table>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary " onclick="sure_trainer()"><span data-locale="all_OK">确定</span><span class="lang_en sml">(OK)</span></button>
+					<button type="cancel" class="btn btn-primary " data-dismiss="modal"><span data-locale="all_close">关闭</span><span class="lang_en sml">(Close)</span></button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal" id="add_trainingmaterialmaker" tabindex="-1" role="dialog" aria-labelledby="modifyDataLable" aria-hidden="true" data-backdrop="static">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4>
+						<span data-locale="trainingbank_addBookManager">添加教材管理员</span>
+						<span class="lang_en" style="font-size: medium;">Add Teaching Material Manager</span>
+					</h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<table class="modal-body" style="width: auto;margin: auto;">
+					<tr>
+						<td class="centent_trainingmaker" style="margin:8px;">
+							<select multiple="multiple" id="select5" class="form-control" style="width:220px;height:160px;">
+								{% for user in users %}
+								<option value="{{user.StaffID}}">{{user.StaffID}} - {{user.StaffName}}</option>
+								{% endfor %}
+							</select>
+						</td>
+						<td style="margin:5px;">
+							<span id="add_trainingmaker" style="background:#898989;cursor:pointer;font-size:8px;color:white;display:block;margin:2px 2px;padding:4px 10px;">&gt;&gt;</span></br>
+							<span id="remove_trainingmaker" style="background:#898989;cursor:pointer;font-size:8px;color:white;display:block;margin:2px 2px;padding:4px 10px;">&lt;&lt;</span>
+						</td>
+						<td class="centent_trainingmaker" style="margin:8px;">
+							<select multiple="multiple" id="select6" class="form-control" style="width: 220px;height:160px;">
+
+							</select>
+						</td>
+					</tr>
+				</table>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary " onclick="sure_trainingmaker()"><span data-locale="all_OK">确定</span><span class="lang_en sml">(OK)</span></button>
+					<button type="cancel" class="btn btn-primary " data-dismiss="modal"><span data-locale="all_close">关闭</span><span class="lang_en sml">(Close)</span></button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal" id="add_newtrainer" tabindex="-1" role="dialog" aria-labelledby="modifyDataLable" aria-hidden="true" data-backdrop="static">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4>
+						<span data-locale="trainingbank_addTrainer">添加训练员</span>
+						<span class="lang_en" style="font-size: medium;">Add Trainer</span>
+					</h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<table class="modal-body" style="width: auto;margin: auto;">
+					<tr>
+						<td class="centent_newtrainer" style="margin:8px;">
+							<select multiple="multiple" id="select7" class="form-control" style="width:220px;height:160px;">
+								{% for user in users %}
+								<option value="{{user.StaffID}}">{{user.StaffID}} - {{user.StaffName}}</option>
+								{% endfor %}
+							</select>
+						</td>
+						<td style="margin:5px;">
+							<span id="add_new_trainer" style="background:#898989;cursor:pointer;font-size:8px;color:white;display:block;margin:2px 2px;padding:4px 10px;">&gt;&gt;</span></br>
+							<span id="remove_newtrainer" style="background:#898989;cursor:pointer;font-size:8px;color:white;display:block;margin:2px 2px;padding:4px 10px;">&lt;&lt;</span>
+						</td>
+						<td class="centent_newtrainer" style="margin:8px;">
+							<select multiple="multiple" id="select8" class="form-control" style="width: 220px;height:160px;">
+
+							</select>
+						</td>
+					</tr>
+				</table>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary " onclick="sure_newtrainer()"><span data-locale="all_OK">确定</span><span class="lang_en sml">(OK)</span></button>
+					<button type="cancel" class="btn btn-primary " data-dismiss="modal"><span data-locale="all_close">关闭</span><span class="lang_en sml">(Close)</span></button>
+				</div>
+			</div>
+		</div>
+	</div>
+<!-- </div> -->

@@ -1,0 +1,271 @@
+{% load static %}
+<div class=" issue_paper_container">
+	<div class="issue">
+		<div class="card issue_choices">
+			<div class="card-header">
+				<h4 class="card_title">
+					<strong>
+						<span data-locale="issue_paper_settingTitle">试卷设置</span>
+						<span class="lang_en sml">Exam Rules Setting</span>
+					</strong>
+				</h4>
+			</div>
+			<div class="card-body">
+				<form id="issue_paper_form" class="form-horizontal" role="form" onsubmit="return false" action="#"
+					method="post" name="myform">
+					<input id="creator_name" type="hidden" name="creator_name" />
+					<input id="creator_id" type="hidden" name="creator_id" />
+					<div class="form-group">
+						<label class="col-sm-4 control-label">
+							<span data-locale="issue_paper_paperName">试卷名称</span><br />
+							<span class="lang_en sml">Exam Name</span>
+						</label>
+						<div class="col-sm-4">
+							<input type="text" name="paper_name" class="form-control" />
+							<span class="text-danger" style="display:none">
+								<span data-locale="all_canNotNull">不可以为空</span>
+								<span class="lang_en sml">Can not be empty </span>
+							</span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 control-label">
+							<span data-locale="issue_paper_bookSelect">选择考核教材</span><br />
+							<span class="lang_en sml">Teaching Materials</span>
+						</label>
+						<div class="col-sm-4">
+							<select name="issue_skill_type" class="form-control"
+								onchange="iss_show_book(this.value,options[this.options.selectedIndex].getAttribute('q_bankid'))">
+								<option value="技能类型" data-locale="issue_paper_skillTypeCanSelect">你可以发布的技能类型</option>
+							</select>
+							<select name="issue_book" onchange="iss_get_selected_bookID(this.value)"
+								class="form-control">
+								<option value="教材" data-locale="issue_paper_book">教材</option>
+							</select>
+							<label class="text-danger">
+								<span data-locale="all_bookQNum">该教材的试题数量</span>
+								<span class="lang_en sml">Quantity of Questions in This Teaching Material</span>:
+								<span id="book_question_num">0</span>
+							</label>
+							<div id="Q_NG_category_count_list">
+							</div>
+							<input id="Q_bankID" type="hidden" name="Q_bankID" />
+							<input id="Q_bankName" type="hidden" name="Q_bankName" />
+							<input id="Q_BookID" type="hidden" name="Q_BookID" />
+							<input id="IsExercised" type="hidden" name="IsExercised" value='False' />
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 control-label">
+							<span data-locale="issue_paper_NGType">训练NG类型</span><br />
+							<span class="lang_en sml">Types of NG</span>
+						</label>
+						<div class="col-sm-4" id="NG_categorys">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 control-label">
+							<span data-locale="all_paperQNum">试卷题目数量</span><br />
+							<span class="lang_en sml">Quantity of Questions in This Paper:</span>
+						</label>
+						<div class="col-sm-3">
+							<input type="number" name="question_num" value="50" title="Please enter a number"
+								placeholder="请输入数字" data-placeholder="practice_inpNumph" class="form-control" />
+							<span class="text-danger" style="display:none">
+								<span data-locale="all_canNotNull">不可以为空</span>
+								<span class="lang_en sml">Can not be empty </span>
+							</span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 control-label">
+							<span data-locale="issue_paper_passNum">考核通过题目数量</span><br />
+							<span class="lang_en sml">Quantity of Questions that must be passed</span>
+						</label>
+						<div class="col-sm-3">
+							<input type="number" name="pass_question_num" value="50" title="Please enter a number"
+								placeholder="请输入数字" data-placeholder="practice_inpNumph" class="form-control" />
+							<span class="text-danger" style="display:none">
+								<span data-locale="all_canNotNull">不可以为空</span>
+								<span class="lang_en sml">Can not be empty </span>
+							</span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 control-label">
+							<span data-locale="all_limitTime">每道题限制时间(秒)</span><br />
+							<span class="lang_en sml">Limit Time for Each Question(seconds)</span>
+						</label>
+						<div class="col-sm-3">
+							<input type="number" name="Q_limit_time" value="15" title="Enter a number (Unit: seconds)"
+								placeholder="请输入数字，单位为秒" data-placeholder="practice_inpNumSecph" class="form-control" />
+							<span class="text-danger" style="display:none" data-locale="all_canNotNull">不可以为空</span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 control-label">
+							<span data-locale="all_newQDays">新题的时间段(近数天)</span><br />
+							<span class="lang_en sml">Time Period for New Questions updated (days)</span>
+						</label>
+						<div class="col-sm-3">
+							<input type="number" name="newQ_before_days" value="30" title="Enter a number (Unit: days)"
+								placeholder="请输入数字，单位为天" data-placeholder="practice_inpNumDayph" class="form-control" />
+							<span class="text-danger" style="display:none">
+								<span data-locale="all_canNotNull">不可以为空</span>
+								<span class="lang_en sml">Can not be empty </span>
+							</span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 control-label">
+							<span data-locale="all_newQPercent">使用新题百分比</span><br />
+							<span class="lang_en sml">Percentage of New Questions</span>
+						</label>
+						<div class="col-sm-3">
+							<input type="number" name="newQ_percent" value="30" title="Please enter a number"
+								placeholder="请输入数字" data-placeholder="practice_inpNumph" class="form-control" />
+							<span class="text-danger" style="display:none" data-locale="all_canNotNull">不可以为空</span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 control-label">
+							<span data-locale="all_NGNum">不良类型至少出现次数</span><br />
+							<span class="lang_en sml">the Minimum Numbers of NG Types showed in This Paper</span>
+						</label>
+						<div class="col-sm-3">
+							<input type="number" name="optionAns_min_num" value="2" title="Please enter a number"
+								placeholder="请输入数字" data-placeholder="practice_inpNumph" class="form-control" />
+							<span class="text-danger" style="display:none">
+								<span data-locale="all_canNotNull">不可以为空</span>
+								<span class="lang_en sml">Can not be empty </span>
+							</span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 control-label">
+							<span data-locale="issue_paper_deadLine">考试截止日期</span><br />
+							<span class="lang_en sml">Exam Deadline</span>
+						</label>
+						<div class="col-sm-3">
+							<input type="date" name="exam_deadline" value="" title="yyyy/mm/dd"
+								onchange="convert_to_utcstamp(this.value)" class="form-control" />
+							<span class="text-danger" style="display:none">
+								<span data-locale="all_canNotNull">不可以为空</span>
+								<span class="lang_en sml">Can not be empty </span>
+							</span>
+							<input id="deadline_utcstamp_millisec" type="hidden" name="deadline_utcstamp_millisec"
+								value="" class="form-control" />
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 control-label">
+							<span data-locale="issue_paper_maxCount">试卷最大考核次数</span><br />
+							<span class="lang_en sml">Maximum Times for Taking Exam</span>
+						</label>
+						<div class="col-sm-3">
+							<input type="number" name="exam_max_count" value="1" title="Please enter a number"
+								placeholder="请输入数字" data-placeholder="practice_inpNumph" class="form-control" />
+							<span class="text-danger" style="display:none">
+								<span data-locale="all_canNotNull">不可以为空</span>
+								<span class="lang_en sml">Can not be empty </span>
+							</span>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="issue_btn">
+							<a href="{% static 'common/file/考核名单示例.xlsx' %}" data-options="plain:true"
+								style="text-align: center;background-color: white;color: #337ab7;border: 1px solid #337ab7;">
+								<span>
+									<span data-locale="issue_paper_template"
+										title="Examinee List Template">下载名单示例</span>
+								</span>
+							</a>
+							<a href="#" id="examinee_import">
+								<input id="examinee_file" type="file" onchange="importf(this)" />
+								<span data-locale="issue_paper_list">导入考生名单</span>
+								<span class="lang_en sml">Import Examinee List</span>
+								<img src="{% static 'common/img/import.png' %}" />
+							</a>
+							{% comment %} <a href="#">
+								<input onclick="issue_paper()" data-locale="issue_paper_sendPaper" />发布试卷
+							</a> {% endcomment %}
+							<button type="button" class="btn btn-primary" onclick="issue_paper()">
+								<span data-locale="issue_paper_sendPaper">发布试卷</span>
+								<span class="lang_en sml">Send Paper</span>
+							</button>
+						</div>
+					</div>
+				</form>
+				<div class="examinees_no_register text-danger" style="display: none;">
+					<strong>
+						<span data-locale="issue_paper_no_register">考生名单中有未注册的用户（黄色背景），若继续发布试卷，系统将自动为该用户进行注册，请谨慎发布。</span>
+						<span class="lang_en sml">There is an unregistered user in the examinee list (on a yellow background). If you continue to send the paper, the system will automatically register the user. Please send the paper carefully.</span>
+					</strong>
+				</div>
+			</div>
+		</div>
+		<div class="examinee">
+			<div class="card">
+				<div class="card-header">
+					<h4 class="card_title" style="display: inline-block;">
+						<strong>
+							<span data-locale="issue_paper_listTitle">考生名单</span>
+							<span class="lang_en sml">Examinee List</span>
+						</strong>
+					</h4>
+					<strong>
+					(<span data-locale="issue_paper_listTips">考生名单只需传入姓名、工号、线别</span>
+						<span class="lang_en sml">Only the name, staff ID and the line are required </span>)
+					</strong>
+				</div>
+				<!-- /.card-header -->
+				<div class="card-body">
+					<div class="table-responsive">
+						<table id="examinee_table" class="table table-hover table-bordered">
+							<thead>
+								<th>
+									<span data-locale="issue_paper_site">Site</span>
+									<span class="lang_en sml">Site</span>
+								</th>
+								<th>
+									<span data-locale="issue_paper_plant">厂别</span>
+									<span class="lang_en sml">Plant</span>
+								</th>
+								<th>
+									<span data-locale="issue_paper_name">考生</span>
+									<span class="lang_en sml">Examinee</span>
+								</th>
+								<th>
+									<span data-locale="issue_paper_id">考生工号</span>
+									<span class="lang_en sml">Examinee ID</span>
+								</th>
+								<th>
+									<span data-locale="issue_paper_line">线别</span>
+									<span class="lang_en sml">Line</span>
+								</th>
+							</thead>
+							<tbody>
+								<!-- <tr>
+									<td>Zora</td>
+									<td>Z20082878</td>
+								</tr> -->
+								<tr>
+									<td colspan="5" style="text-align: center;font-weight: 700;">
+										<span data-locale="issue_paper_noExaminee">暂未上传考生名单</span>
+										<span class="lang_en sml">The list of examinees has not been uploaded</span>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<!-- /.col -->
+					<!-- /.row -->
+				</div>
+				<!-- ./card-body -->
+			</div>
+			<!-- /.card -->
+		</div>
+
+
+	</div>
+</div>

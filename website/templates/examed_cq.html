@@ -1,0 +1,74 @@
+{% load static %}
+<!-- <div class="content-wrapper" style="margin-left: 20px;"> -->
+<div class="exam_container">
+  <div id="examed_toolbar">
+    <div id="showExamed" style="margin-top: 10px; margin-bottom: 0px">
+      <span data-locale="examed_cq_enDetail"></span>
+      <strong id="examed_cqName" style="padding: 0 5px">{{name}}</strong>
+      <span data-locale="examed_cq_num">第</span>
+      <strong>{{examedCount}}</strong>
+      <span data-locale="examed_cq_zhDetail">次考核的考卷详情</span><br />
+      <span class="lang_en sml">Details of </span>
+      <strong class="lang_en sml" style="padding: 0 5px">{{name}}</strong>
+      <span class="lang_en sml">(No.</span>
+      <strong class="lang_en sml">{{examedCount}}</strong>
+      <span class="lang_en sml">)</span>
+      <input
+        id="examed_cqPaperID"
+        value="{{examedPaperID}}"
+        style="display: none"
+      />
+    </div>
+  </div>
+  <table
+    id="examed_table"
+    data-toolbar="#examed_toolbar"
+    data-search="true"
+    data-show-toggle="true"
+    data-show-fullscreen="true"
+    data-show-pagination-switch="true"
+    data-pagination="true"
+    data-id-field="id"
+    data-page-list="[10, 25, 50, 100, all]"
+    data-show-footer="true"
+  ></table>
+</div>
+<!-- </div> -->
+
+<div
+  id="outerdiv"
+  style="
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    display: none;
+  "
+>
+  <div id="innerdiv" style="position: absolute">
+    <img id="max_img" style="border: 5px solid #fff" src="" />
+  </div>
+</div>
+
+<div id="image_picture">
+  <img src="" alt="" id="img_big" />
+</div>
+
+<style>
+  #img_big {
+    width: 400px;
+    height: 300px;
+    border: black 1px solid;
+  }
+  #image_picture {
+    position: absolute;
+    display: none;
+    z-index: 9998;
+  }
+  #photo_dialog {
+    z-index: 9999;
+  }
+</style>

@@ -1,0 +1,36 @@
+{% load static %}
+{% block nav_content%}
+<div class="train_notice_container" id="train_notice">
+	<div class="card">
+		<div class="card-header">
+			<h4 class="card_title"><strong>技能培训</strong></h4>
+		</div>
+		<!-- /.card-header -->
+		<div class="card-body">
+			{% comment %} <div id="train_notice_tips">
+				<div class="col_md_8">
+					<p>(1) 每份教材总培训时间 = 教材内容每一页面有效浏览时间累加。</p>
+					<p>(2) 教材内容每一页面将有最短浏览时间，低于此时间该页面培训时间将计为无效。</p>
+					<p>(3) 每份教材将有最短总培训时间，低于此时间本教材该次培训时间将计为无效。</p>
+					<p>(4) 当前浏览页数显示<span class="green">绿色</span>表示本页已达标，<span class="red">红色</span>表示未达标。</p>
+					<p>(5)点击“退出”按钮可退出本次培训，若本次培训总时间有效按钮颜色为<span class="green">绿色</span>，否则为<span class="red">红色</span>。
+					</p>
+					<p><img src="{% static 'common/img/train_notice_tips.png'%}" />注意：系统将只记录每次培训的有效总时间，其他无效时间将不记录。</p>
+				</div>
+				<!-- /.col -->
+			</div> {% endcomment %}
+			<!-- /.row -->
+			<div id="train_skill_type">
+				<!-- <div class="form-group">
+						<input type="radio" name="skill_type" id="SPI" checked>
+						<label for="SPI">SPI</label>
+					</div> -->
+				<div class="skill_btn">
+					<button type="button" class="btn btn-primary " onclick="skill_type_confirm()">确定</button>
+				</div>
+			</div>
+		</div>
+		<!-- ./card-body -->
+	</div>
+	<!-- /.card -->
+</div>

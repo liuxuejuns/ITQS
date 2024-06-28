@@ -1,0 +1,17 @@
+{% load static %}
+<div class="pre_issue_paper_container">
+	<div id="to_issue">
+		<a href="#" onclick="issuePaper()">
+			<button type="button" class="btn btn-primary">
+				<span data-locale="pre_issue_paper_sendPapers">发布试卷</span>
+				<span class="lang_en sml">Publish Papers</span>
+			</button>
+		</a>
+	</div>
+	<div class="pre_issue_paper_container">
+		<table id="my_issue_table" data-toolbar="#to_issue" data-search="true" data-show-toggle="true"
+			data-show-fullscreen="true" data-show-pagination-switch="true" data-pagination="true" data-id-field="id"
+			data-page-list="[10, 25, 50, 100, all]">
+		</table>
+	</div>
+</div>

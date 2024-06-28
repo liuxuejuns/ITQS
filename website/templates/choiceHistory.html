@@ -1,0 +1,27 @@
+{% load static %}
+<!-- <div class="content-wrapper" style="margin-left: 20px;"> -->
+    <div class="manage_data_container">
+        <div id="examHistoryToolbar">
+            <div id="Excell">
+                <a download="examBank" href="#" onclick="return ExcellentExport.excel(this, 'examHistoryTable', 'Sheet Name Here');">
+                    <span data-locale="choiceHistroy_export">一键导出记录</span>
+                    <span class="lang_en sml">Export Records</span>
+                    <img src="{% static 'common/img/export.png' %}"/>
+                </a>
+                <input id="choiceHistoryChoiceQuestionID" value="{{choiceQuestionID}}" style="display: none;"/>
+            </div><br>
+        </div>
+        <table id="examHistoryTable" 
+            data-toolbar="#examHistoryToolbar" 
+            data-search="true" 
+            data-show-toggle="true"
+            data-show-fullscreen="true"     
+            data-click-to-select="true" 
+            data-show-pagination-switch="true" 
+            data-pagination="true" 
+            data-id-field="id"
+            data-page-list="[10, 25, 50, 100, all]" 
+            data-show-footer="true">
+        </table>
+    </div>
+<!-- </div> -->

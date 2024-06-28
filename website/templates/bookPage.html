@@ -1,0 +1,283 @@
+{% load static %}
+<div class="bookpage_container" style="margin-left: 10px;">
+	<div id="toolbarPage">
+		<!-- <button id="removePage" class="btn btn-danger">
+			<i class="fa fa-trash"></i> 删除技能教材页
+		</button> -->
+		<a href="#" onclick="searchBookPageHist('{{bookid}}')">
+			<button id="bookPage_history" class="btn btn-primary">
+				<i class="fa fa-search"></i>
+				<span data-locale="bookPage_revisionHist" >查看技能教材修改历史</span>
+				<span class="lang_en sml">Revision History of the Teaching Material</span>
+			</button>
+		</a>
+		<div id="showTest">
+			<span style="margin-top: 10px;margin-bottom: 0px;">
+				<strong>
+					<span data-locale="bookPage_bank">技能教材库</span>
+					<span class="lang_en sml">(Teaching Material Bank)</span>
+					<input id="bookPageTrainingBankID" value="{{book.TrainingBankID}}" style="display: none;"/>
+				</strong>
+				:{{book.TrainingBankName}} / 
+				<strong>
+					<span data-locale="bookPage_book">教材</span>
+					<span class="lang_en sml">(Teaching Material)</span>
+				</strong>
+				:{{book.Name}}
+			</span>
+		</div>
+	</div>
+	<table id="tablePage" data-toolbar="#toolbarPage" data-search="true" data-show-toggle="true"
+		data-show-fullscreen="true" data-show-pagination-switch="true" data-pagination="true" data-id-field="id"
+		data-page-list="[10, 25, 50, 100, all]" data-show-footer="true">
+	</table>
+</div>
+<div class="modal" id="add_page" tabindex="-1" role="dialog" aria-labelledby="add_pageLable" aria-hidden="true"
+	data-backdrop="static">
+	<div class="modal-dialog">
+		<div class="modal-content" style="width: 600px;">
+			<div class="modal-header">
+				<h3>
+					<span data-locale="bookPage_addPage">添加技能教材</span>
+					<span class="lang_en" style="font-size: medium;">Add Pages of Teaching Material</span>
+				</h3>
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+			<div class="modal-body" style="padding:20px 40px 20px 40px;">
+				<form class="form-horizontal" role="form" autocomplete="off" enctype="multipart/form-data"
+					action="{% url 'website:add_bookpage' bookid %}" method="post" id="add_page_form">
+					{% csrf_token %}
+					<div class="form-group">
+						<label class="col-sm-4 control-label">
+							<span data-locale="bookPage_bookName">教材名称</span>
+							<span class="lang_en sml">Teaching Material</span>
+						</label>
+						<div class="col-sm-8">
+							<input type="text" id="bookName" name="book_name" value={{book.Name}} readonly="true"
+								class="form-control">
+						</div>
+					</div>
+					<div class="form-group" hidden>
+						<label class="col-sm-4 control-label">
+							<span data-locale="book_bookID">训练教材编号</span>
+							<span class="lang_en sml">Teaching Material Bank ID</span>
+						</label>
+						<div class="col-sm-8">
+							<input type="text" id="newBookID" placeholder="从Book表获得" class="form-control" name="book_id"
+								value={{ bookid }}>
+						</div>
+					</div>
+					<div class="form-group" hidden>
+						<label class="col-sm-4 control-label">教材页名称:</label>
+						<div class="col-sm-8">
+							<input type="text" id="newPageName" class="form-control" name="name">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 control-label">
+							<span data-locale="bookPage_bookContent">教材页内容</span>
+							<span class="lang_en sml">Teaching Material Content</span>
+						</label>
+						<div class="col-sm-8">
+							<label for="newPageContent" type="button" style="padding: 5px;">
+								<span data-locale="all_chooseFile">选择文件</span>
+								<span class="lang_en sml">Choose File</span>
+							</label>
+							<span id="show_bookPageName">
+								<span data-locale="choiceQuestion_noFiles" title="Please Select File">未选择文件</span>
+							</span>
+							<input type="file" accept=".png, .jpg" id="newPageContent" name="content" style="display: none;"
+								onchange="check_page_content()">
+						</div>
+					</div>
+					<div class="form-group" id="page_audio_div" style="display:none">
+						<label class="col-sm-4 control-label" data-locale="bookPage_pageAudio">教材页音频:</label>
+						<div class="col-sm-8">
+							<label for="newPageAudio" type="button" style="padding: 5px;">
+								<span data-locale="all_chooseFile">选择文件</span>
+								<span class="lang_en sml">Choose File</span>
+							</label>
+							<span id="show_pageAudioName">
+								<span data-locale="choiceQuestion_noFiles" title="Please Select File">未选择文件</span>
+							</span>
+							<input type="file" accept=".m4a, .wav" id="newPageAudio" name="audio_file" style="display: none;"
+								onchange="check_page_audio()">
+						</div>
+					</div>
+					<div class="form-group" hidden>
+						<label class="col-sm-4 control-label">最短培训时间:</label>
+						<div class="col-sm-8">
+							<input type="text" oninput="value=value.replace(/[^\d]/g,'')" id="newPageMinTime"
+								placeholder="XX分钟" class="form-control" name="mintime">
+						</div>
+					</div>
+					<div class="form-group" hidden>
+						<label class="col-sm-4 control-label">创建人工号:</label>
+						<div class="col-sm-8">
+							<input type="text" id="newPageCreatorID" class="form-control" name="creator_id">
+						</div>
+					</div>
+					<div class="form-group" hidden>
+						<label class="col-sm-4 control-label">创建人名字:</label>
+						<div class="col-sm-8">
+							<input type="text" id="newPageCreatorName" class="form-control" name="creator_name">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 control-label">
+							<span data-locale="all_reason">理由</span>
+							<span class="lang_en sml">Reason</span>
+						</label>
+						<div class="col-sm-8">
+							<textarea class="form-control" id="newPageReason" rows="3" name="reason"></textarea>
+						</div>
+					</div>
+
+					<div class="modal-footer">
+						<div style="margin: auto">
+							<label class="control-label">
+								<span data-locale="bookPage_direction">方向</span>
+								<span class="lang_en sml">Direction</span>
+							</label>
+							<label>
+								<input name="insert_direction" type="radio" value="up" />
+								<span data-locale="bookPage_up">上</span>
+								<span class="lang_en sml">Up</span>
+							</label>
+							<label>
+								<input name="insert_direction" type="radio" value="down" checked />
+								<span data-locale="bookPage_down">下</span>
+								<span class="lang_en sml">Down</span>
+							</label>
+						</div>
+						<input type="hidden" id="newPageSequence" class="form-control" name="sequence">
+						<button type="button" class="btn btn-primary" onclick="add_bookpage()"><span data-locale="all_OK">确定</span><span class="lang_en sml">(OK)</span></button>
+						<button type="button" class="btn btn-primary " data-dismiss="modal"><span data-locale="all_close">关闭</span><span class="lang_en sml">(Close)</span></button>
+					</div>
+				</form>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- 修改技能教材页模态框 -->
+<div class="modal" id="modify_page" tabindex="-1" role="dialog" aria-labelledby="modify_pageLable" aria-hidden="true"
+	data-backdrop="static">
+	<div class="modal-dialog">
+		<div class="modal-content" style="width: 600px;">
+			<div class="modal-header">
+				<h3>修改技能教材页</h3>
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+			<div class="modal-body" style="padding:20px 40px 20px 40px;">
+				<form class="form-horizontal" role="form" autocomplete="off" method="post" id="modify_page_form">
+					<div class="form-group" hidden>
+						<label class="col-sm-4 control-label">训练教材页编号:</label>
+						<div class="col-sm-8">
+							<input type="text" id="modifyBookPageID" readonly="true" class="form-control">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 control-label">教材页名称:</label>
+						<div class="col-sm-8">
+							<input type="text" id="modifyPageName" readonly="true" class="form-control">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 control-label">教材页内容:</label>
+						<div class="col-sm-8">
+							<input type="text" id="modifyPageContent" readonly="true" class="form-control">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 control-label">教材页音频:</label>
+						<div class="col-sm-8">
+							<input type="text" id="modifyPageAudio" placeholder="可为空" class="form-control">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 control-label">最短培训时间:</label>
+						<div class="col-sm-8">
+							<input type="text" oninput="value=value.replace(/[^\d]/g,'')" id="modifyPageMinTime"
+								placeholder="XX分钟" class="form-control">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 control-label">创建人工号:</label>
+						<div class="col-sm-8">
+							<input type="text" id="modifyPageCreatorID" readonly="true" class="form-control">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 control-label">创建人名字:</label>
+						<div class="col-sm-8">
+							<input type="text" id="modifyPageCreatorName" readonly="true" class="form-control">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 control-label">理由:</label>
+						<div class="col-sm-8">
+							<textarea id="modifyPageCreatorReason" class="form-control" rows="3"
+								name="reason"></textarea>
+						</div>
+					</div>
+				</form>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" onclick="modify_bookPage()">确定</button>
+					<button type="button" class="btn btn-primary " data-dismiss="modal">关闭</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- 删除技能教材页模态框 -->
+<div class="modal" id="del_page" tabindex="-1" role="dialog" aria-labelledby="del_pageLable" aria-hidden="true"
+	data-backdrop="static">
+	<div class="modal-dialog">
+		<div class="modal-content" style="width: 600px;">
+			<div class="modal-header">
+				<h3>
+					<span data-locale="bookPage_delPage">删除技能教材页</span>
+					<span class="lang_en" style="font-size: medium;">Delete This Page</span>
+				</h3>
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+			<div class="modal-body" style="padding:20px 40px 20px 40px;">
+				<form class="form-horizontal" role="form" autocomplete="off" id="del_page_form">
+					{% csrf_token %}
+					<div class="form-group" hidden>
+						<label class="col-sm-4 control-label">教材页编号:</label>
+						<div class="col-sm-8">
+							<input type="text" id="bookPageID" placeholder="从BookPage表获得" class="form-control"
+								name="bookpage_id">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 control-label">
+							<span data-locale="all_reason">理由</span>
+							<span class="lang_en sml">Reason</span>
+						</label>
+						<div class="col-sm-8">
+							<textarea class="form-control" id="bookPageReason" rows="3" name="reason"></textarea>
+						</div>
+					</div>
+
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" onclick="delete_bookpage()"><span data-locale="all_OK">确定</span><span class="lang_en sml">(OK)</span></button>
+						<button type="button" class="btn btn-primary " data-dismiss="modal"><span data-locale="all_close">关闭</span><span class="lang_en sml">(Close)</span></button>
+					</div>
+				</form>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="outerdiv"
+	style="position:fixed;top:0;left:0;background:rgba(0,0,0,0.7);z-index:2;width:100%;height:100%;display:none;">
+	<div id="innerdiv" style="position:absolute;">
+		<img id="max_img" style="border:5px solid #fff;" src="" />
+	</div>
+</div>

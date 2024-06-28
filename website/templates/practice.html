@@ -1,0 +1,274 @@
+{% load static %}
+<div class="practice_container">
+	<div class="card">
+		<div class="card-header">
+			<h4 class="card_title">
+				<strong>
+					<span data-locale="practice_set">训练规则设置</span>
+					<span class="lang_en sml">Practice Rules Setting</span>
+				</strong>
+			</h4>
+		</div>
+		<div class="card-body">
+			<div id="practice_notice_tips">
+				<form id="practice_form" class="form-horizontal" role="form" onsubmit="return false" action="#"
+					method="post" name="myPracticeForm">
+					<div class="form-group">
+						<label class="col-sm-4 control-label">
+							<span data-locale="practice_bookSelect">选择训练教材</span><br/>
+							<span class="lang_en sml">Teaching Materials</span>
+						</label>
+						<div class="col-sm-4">
+							<select name="practice_skill_type" class="form-control"
+								onchange="pra_show_book(this.value,options[this.options.selectedIndex].getAttribute('q_bankid'))">
+								<option value="技能类型" data-locale="practice_bookCanSelect">你可以选择的技能类型</option>
+							</select>
+							<select name="practice_book" onchange="pra_get_selected_bookID(this.value)"
+								class="form-control">
+								<option value="教材" data-locale="practice_book">教材</option>
+							</select>
+							<label class="text-danger">
+								<span data-locale="all_bookQNum">该教材的试题数量</span>
+								<span class="lang_en sml">Quantity of Questions in This Teaching Material</span>:
+								<span id="book_question_num">0</span>
+							</label>
+							<div id="Q_NG_category_count_list">
+							</div>
+							<input id="Q_bankID" type="hidden" name="Q_bankID" />
+							<input id="Q_bankName" type="hidden" name="Q_bankName" />
+							<input id="Q_BookID" type="hidden" name="Q_BookID" />
+							<input id="IsExercised" type="hidden" name="IsExercised" value='False' />
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 control-label">
+							<span data-locale="practice_NGType">训练NG类型</span><br/>
+							<span class="lang_en sml">Types of NG</span>
+						</label>
+						<div class="col-sm-4" id="NG_categorys">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 control-label">
+							<span data-locale="all_paperQNum">试卷题目数量</span><br/>
+							<span class="lang_en sml">Quantity of Questions in This Paper:</span>
+						</label>
+						<div class="col-sm-3">
+							<input type="number" name="question_num" value="50" title="Please enter a number" placeholder="请输入数字" data-placeholder="practice_inpNumph"
+								class="form-control" />
+								<span class="text-danger" style="display:none">
+									<span data-locale="all_canNotNull">不可以为空</span>
+									<span class="lang_en sml">Can not be empty </span>
+								</span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 control-label">
+							<span data-locale="practice_passNum">训练通过题目数量</span><br/>
+							<span class="lang_en sml">Quantity of Questions that must be passed:</span>
+						</label>
+						<div class="col-sm-3">
+							<input type="number" name="pass_question_num" value="50" title="Please enter a number" placeholder="请输入数字" data-placeholder="practice_inpNumph"
+								class="form-control" />
+								<span class="text-danger" style="display:none">
+									<span data-locale="all_canNotNull">不可以为空</span>
+									<span class="lang_en sml">Can not be empty </span>
+								</span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 control-label">
+							<span data-locale="all_limitTime">每道题限制时间(秒)</span><br/>
+							<span class="lang_en sml">Limit Time for Each Question(seconds)</span>
+						</label>
+						<div class="col-sm-3">
+							<input type="number" name="Q_limit_time" value="15" title="Enter a number (Unit: seconds)" placeholder="请输入数字，单位为秒" data-placeholder="practice_inpNumSecph"
+								class="form-control" />
+								<span class="text-danger" style="display:none">
+									<span data-locale="all_canNotNull">不可以为空</span>
+									<span class="lang_en sml">Can not be empty </span>
+								</span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 control-label">
+							<span data-locale="all_newQDays">新题的时间段(近数天)</span><br/>
+							<span class="lang_en sml">Time Period for New Questions updated (days)</span>
+						</label>
+						<div class="col-sm-3">
+							<input type="number" name="newQ_before_days" value="30" title="Enter a number (Unit: days)" placeholder="请输入数字，单位为天" data-placeholder="practice_inpNumDayph"
+								class="form-control" />
+							<span class="text-danger" style="display:none" data-locale="all_canNotNull">不可以为空</span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 control-label">
+							<span data-locale="all_newQPercent">使用新题百分比</span><br/>	
+							<span class="lang_en sml">Percentage of New Questions</span>
+						</label>
+						<div class="col-sm-3">
+							<input type="number" name="newQ_percent" value="30" title="Please enter a number" placeholder="请输入数字" data-placeholder="practice_inpNumph"
+								class="form-control" />
+								<span class="text-danger" style="display:none">
+									<span data-locale="all_canNotNull">不可以为空</span>
+									<span class="lang_en sml">Can not be empty </span>
+								</span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 control-label">
+							<span data-locale="all_NGNum">不良类型至少出现次数</span><br/>
+							<span class="lang_en sml">the Minimum Numbers of NG Types showed in This Paper</span>
+						</label>
+						<div class="col-sm-3">
+							<input type="number" name="optionAns_min_num" value="2" title="Please enter a number" placeholder="请输入数字" data-placeholder="practice_inpNumph"
+								class="form-control" />
+								<span class="text-danger" style="display:none">
+									<span data-locale="all_canNotNull">不可以为空</span>
+									<span class="lang_en sml">Can not be empty </span>
+								</span>
+						</div>
+					</div>
+					<div class="form-group">
+						<button type="button" class="btn btn-primary " onclick="practice_confirm()">
+							<span data-locale="practice_starPractice">开始训练</span>
+							<span class="lang_en sml">Start Training</span>
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<div class="card check_ans">
+		<div class="card-header">
+			<h4 class="card_title">
+				<strong>
+					<span data-locale="practice_practiceRes">训练结果</span>
+					<span class="lang_en sml">Practice Result</span>
+				</strong>
+			</h4>
+		</div>
+		<div class="card-body practice_tips">
+			<div id="my_result">
+				<p>
+					<span data-locale="practice_tips1">恭喜你已完成本次训练！</span><br/>
+					<span class="lang_en sml">Congratulations! You’ve done the practice!</span>
+				</p>
+				<p>
+					<span data-locale="practice_tips2">在本次训练中，你共答对</span>
+					<strong id="correct_count" style="padding: 0 5px;">R</strong>
+					<span data-locale="practice_tips2_1">题，答错</span>
+					<strong id="wrong_count" style="padding: 0 5px;">W</strong>
+					<span data-locale="practice_tips2_2">题，未作答</span>
+					<strong id="not_ans_count" style="padding: 0 5px;">N</strong>
+					<span data-locale="practice_tips2_3">题。</span><br/>
+					<span class="lang_en sml">In this practice, you got</span>
+					<strong class="lang_en sml" id="correct_count" style="padding: 0 5px;">R</strong>
+					<span class="lang_en sml">questions right,</span>
+					<strong class="lang_en sml" id="wrong_count" style="padding: 0 5px;">W</strong>
+					<span class="lang_en sml">wrong, and</span>
+					<strong class="lang_en sml"  id="not_ans_count" style="padding: 0 5px;">N</strong>
+					<span class="lang_en sml">no answer.</span>
+				</p>
+				<p>
+					<img src="{% static 'common/img/train_notice_tips.png'%}"/>
+					<span data-locale="practice_tips3">注意：查看答案时，黄色背景选项为用户作答时选择的选项，红色字体选项为正确答案。</span><br/>
+					<span class="lang_en sml">Note: When you are checking the answer, the option in yellow background is the one you selected, and the option in red is the correct answer.</span>
+				</p>
+			</div>
+			<div class="examing_btn">
+				<button type="button" class="btn btn-primary " onclick="check_ans()">
+					<span data-locale="practice_checkAns">查看答案</span>
+					<span class="lang_en sml">Check Answers</span>
+				</button>
+				<button type="button" class="btn btn-primary " onclick="new_practice()">
+					<span data-locale="practice_newPractice">退出</span>
+					<span class="lang_en sml">New Practice</span>
+				</button>
+			</div>
+		</div>
+	</div>
+	<div class="my_practice" id="myPractice">
+		<div class="examing_btn practice_btn right_btn pra_btn">
+			<strong>
+				<span data-locale="practice_question">题目</span>
+				<span class="lang_en sml">Question</span>:
+			</strong>
+			<strong id="question_num">1</strong>
+			<span data-locale="practice_time">剩余时间</span>
+			<span class="lang_en sml">Remaining Time</span>:
+			<span class="show_time"></span>
+			<div class="btn practice_next_btn">
+				<a href="#practiceQuestions" data-slide="next">
+					<span data-locale="practice_next">下一题</span>
+					<span class="lang_en sml">Next</span>
+				</a>
+			</div>
+		</div>
+		<div class="examing_btn check_ans_btn right_btn">
+			<div class="btn">
+				<a href="#" onclick="exit_ans()">
+					<span data-locale="practice_newPractice">退出</span>
+					<span class="lang_en sml">New Practice</span>
+				</a>
+			</div>
+			<strong>
+				<span data-locale="practice_question">题目</span>
+				<span class="lang_en sml">Question</span>:
+			</strong>
+			<strong id="check_question_num">1</strong>
+			<div class="btn check_pre_btn">
+				<a href="#practiceQuestions" data-slide="prev">
+					<span data-locale="practice_pre">上一题</span>
+					<span class="lang_en sml">Prev</span>
+				</a>
+			</div>
+			<div class="btn check_next_btn">
+				<a href="#practiceQuestions" data-slide="next">
+					<span data-locale="practice_next">下一题</span>
+					<span class="lang_en sml">Next</span>
+				</a>
+			</div>
+		</div>
+		<div id="practice_option_container">
+			<!-- <div>
+				<input type="radio" name="quests_option" id="A" index="0" checked>
+				<label for="A">A.高跷</label>
+			</div>
+			<div>
+				<input type="radio" name="quests_option" id="B" index="1">
+				<label for="B">B.缺件</label>
+			</div>
+			<div>
+				<input type="radio" name="quests_option" id="C" index="3">
+				<label for="C">C.偏移</label>
+			</div>
+			<div>
+				<input type="radio" name="quests_option" id="D" index="4">
+				<label for="D">D.误判</label>
+			</div> -->
+		</div>
+		<div id="pra_question_container">
+			<div id="practiceQuestions" class="carousel slide questions" data-interval="false">
+				<!-- 轮播试题 -->
+				<div class="carousel-inner">
+					<!-- <div class="item question_item active">
+						<img src="../../static/common/file/SMT AOI復判技能考試系統1.png" />
+					</div>
+					<div class="item question_item">
+						<img src="../../static/common/file/SMT AOI復判技能训练教材.zip_files/SMT AOI復判技能训练教材/投影片1.PNG" />
+					</div>
+					<div class="item question_item">
+						<img src="../../static/common/file/SMT AOI復判技能训练教材.zip_files/SMT AOI復判技能训练教材/投影片2.PNG" />
+					</div>
+					<div class="item question_item">
+						<img src="../../static/common/file/SMT AOI復判技能训练教材.zip_files/SMT AOI復判技能训练教材/投影片3.PNG" />
+					</div>
+					<div class="item question_item">
+						<img src="../../static/common/file/SMT AOI復判技能训练教材.zip_files/SMT AOI復判技能训练教材/投影片4.PNG" />
+					</div> -->
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

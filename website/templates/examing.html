@@ -1,0 +1,127 @@
+{% load static %}
+<div class="examing_container exam_notice_container">
+	<div class="card">
+		<div class="card-header">
+			<h4 class="card_title"><strong data-locale="examing_tipsTitle">考核说明</strong></h4>
+		</div>
+		<!-- /.card-header -->
+		<div class="card-body">
+			<div id="exam_notice_tips">
+				<div class="col_md_8">
+					<p class="exam_paper">
+						<span data-locale="examing_paperName">试卷</span>
+						<span class="lang_en sml">Exam Name</span>:
+						<span class="paper_name"></span>
+					</p>
+					<p>
+						<span data-locale="examing_tips1">(1) 本卷考试总时间设定为</span>
+						<span class="red time_N" style="padding: 0 5px;">N</span>
+						<span data-locale="examing_tips1_1">秒，每題仅停留</span>
+						<span class="red time_S" style="padding: 0 5px;">S</span>
+						<span data-locale="examing_tips1_2">秒。</span><br/>
+						<span class="lang_en sml">(1) The exam should be finished in limited time </span>
+						<span class="lang_en sml red time_N" style="padding: 0 5px;">N</span>
+						<span class="lang_en sml">seconds. You can only take</span>
+						<span class="lang_en sml red time_S" style="padding: 0 5px;">S</span>
+						<span class="lang_en sml">seconds for each question.</span>
+					</p>
+					<p >
+						<span data-locale="examing_tips2">(2) 考生点击“下一题”，或本题时间一到，系统将自动跳转到下一题，进入下一题后不能返回上一题。</span><br/>
+						<span class="lang_en sml">(2) The system will automatically skip to the nextquestion, or you can click “Next” to proceed. You cannot return to the previous question.</span>
+					</p>
+					<p>
+						<span data-locale="examing_tips3">(3) 考试结束，系统将自动提交考试信息，届时将可查看考核成绩。</span><br/>
+						<span class="lang_en sml">(3) After the exam is finished, the system will automatically submit the test information, which will be able to view the examination results.</span>
+					</p>
+					<p>
+						<span data-locale="examing_tips4">(4) 本卷考核不允许超过</span>
+						<span class="red count_X" style="padding: 0 5px;">X</span>
+						<span  data-locale="examing_tips4_1">次，</span>
+						<span class="red count_X" style="padding: 0 5px;">X</span>
+						<span data-locale="examing_tips4_2" >次考试均不及格，一年内不能再参与此岗位考核。</span><br/>
+						<span class="lang_en sml">(4) There are only</span>
+						<span class="lang_en smlred count_X" style="padding: 0 5px;">X</span>
+						<span class="lang_en sml">chances for this exam. You are not allowed to take this exam for this positionv within five years, if you fail this exam</span>
+						<span class="lang_en sml red count_X" style="padding: 0 5px;">X</span>
+						<span class="lang_en sml">times.</span>
+					</p>
+					<p>
+						<span data-locale="examing_tips6">(5) 开始考试将进入全屏模式，一旦退出全屏模式，本次考核将马上结束。</span><br/>
+						<span class="lang_en sml">(5) It will enter the full screen mode at the beginning of the exam. Once you exit the full screen mode, the exam will end immediately.</span>
+					</p>
+					<p>
+						<img src="../../static/common/img/train_notice_tips.png"/>
+						<span data-locale="examing_tips5">注意：学员看完考试规则点“开始考试”按钮后将马上进入考试。</span><br/>
+						<span class="lang_en sml">Note: You will enter the exam immediately after finish reading the exam rules instrusctions and clicking the 'Start the Exam' button.</span>
+					</p>
+				</div>
+				<!-- /.col -->
+				<div class="exam_btn">
+					<button type="button" class="btn btn-primary " onclick="exam_confirm()">
+						<span data-locale="examing_startExam">开始考试</span>
+						<sapn class="lang_en sml">Start the Exam</sapn>
+					</button>
+				</div>
+			</div>
+		</div>
+		<!-- ./card-body -->
+	</div>
+	<div class="my_exam" id="myExam">
+		<div class="examing_btn exa_btn">
+			<strong>
+				<span data-locale="practice_question">题目</span>
+				<span class="lang_en sml">Question</span>:
+			</strong>
+			<strong id="exam_question_num">1</strong>
+			<span data-locale="practice_time">剩余时间</span>
+			<span class="lang_en sml">Remaining Time</span>:
+			<span class="show_time"> </span> 
+			<div class="btn next_btn">
+				<a href="#myQuestions" data-slide="next">
+					<span data-locale="practice_next">下一题</span>
+					<span class="lang_en sml">Next</span>
+				</a>
+			</div>
+		</div>
+		<div id="option_container">
+			<!-- <div>
+				<input type="radio" name="quests_option" id="A" index="0" checked>
+				<label for="A">A.高跷</label>
+			</div>
+			<div>
+				<input type="radio" name="quests_option" id="B" index="1">
+				<label for="B">B.缺件</label>
+			</div>
+			<div>
+				<input type="radio" name="quests_option" id="C" index="3">
+				<label for="C">C.偏移</label>
+			</div>
+			<div>
+				<input type="radio" name="quests_option" id="D" index="4">
+				<label for="D">D.误判</label>
+			</div> -->
+		</div>
+		<div id="question_container">
+			<div id="myQuestions" class="carousel slide questions" data-interval="false">
+				<!-- 轮播试题 -->
+				<div class="carousel-inner">
+					<!-- <div class="item question_item active">
+						<img src="../../static/common/file/SMT AOI復判技能考試系統1.png" />
+					</div>
+					<div class="item question_item">
+						<img src="../../static/common/file/SMT AOI復判技能训练教材.zip_files/SMT AOI復判技能训练教材/投影片1.PNG" />
+					</div>
+					<div class="item question_item">
+						<img src="../../static/common/file/SMT AOI復判技能训练教材.zip_files/SMT AOI復判技能训练教材/投影片2.PNG" />
+					</div>
+					<div class="item question_item">
+						<img src="../../static/common/file/SMT AOI復判技能训练教材.zip_files/SMT AOI復判技能训练教材/投影片3.PNG" />
+					</div>
+					<div class="item question_item">
+						<img src="../../static/common/file/SMT AOI復判技能训练教材.zip_files/SMT AOI復判技能训练教材/投影片4.PNG" />
+					</div> -->
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

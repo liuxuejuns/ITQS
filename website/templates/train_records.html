@@ -1,0 +1,47 @@
+{% load static %}
+<!-- <div class="train_records_container">
+	<div id="train_record_export"><a download="培训记录" href="#" onclick="return ExcellentExport.excel(this, 'train_record_table', 'Sheet Name Here');">一键导出记录<img src="../../static/common/img/export.png"/> </a></div>
+	<div class="table-responsive">
+		<table id="train_record_table" class="table table-hover table-striped">
+			<thead>
+				<tr>
+					<th>教材名称</th>
+					<th>教材最短阅读时间/秒</th>
+					<th>技能类型</th>
+					<th>培训人工号</th>
+					<th>培训人</th>
+					<th>总培训时间/秒</th>
+					<th>培训日期</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr><td colspan="7" style="text-align: center;font-weight: 700;">暂无培训记录</td></tr>
+			</tbody>
+		</table>
+	</div>
+</div> -->
+<!-- <div class="content-wrapper"style="margin-left: 20px;"> -->
+	<div class="train_records_container">
+		<div id="toolbar_self_recoder">
+			<div id="train_record_export">
+				<a download="培训记录" href="#" onclick="return ExcellentExport.excel(this, 'train_record_table', 'Sheet Name Here');">
+					<span data-locale="train_records_export">一键导出培训记录</span>
+					<span class="lang_en sml">Export Training Records</span>
+					<img src="../../static/common/img/export.png"/>
+				</a>
+			</div>
+		</div>
+		<table
+		  id="train_record_table"
+		  data-toolbar="#toolbar_self_recoder"
+		  data-search="true"
+		  data-show-toggle="true"
+		  data-show-fullscreen="true"
+		  data-click-to-select="true"
+		  data-show-pagination-switch="true"
+		  data-pagination="true"
+		  data-id-field="id"
+		  data-page-list="[10, 25, 50, 100, all]">
+		</table>
+	</div>
+<!-- </div> -->

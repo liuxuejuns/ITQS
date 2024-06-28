@@ -1,0 +1,140 @@
+{% load static %}
+<div class="superUserMngmt_container">
+    <!-- <div id="toolbar_superUser">
+        <button class="btn btn-primary" data-toggle="modal" data-target="#super_add_user">
+            <i class="fa fa-plus-circle"></i>
+            <span data-locale="master_addUserTitle">添加用户</span>
+            <span class="lang_en sml">Add User</span>
+        </button>
+    </div> -->
+    <table id="super_user_table" data-toolbar="#toolbar_superUser" data-search="true" data-show-toggle="true"
+        data-show-fullscreen="true" data-click-to-select="true"
+        data-pagination="true" data-id-field="id" data-page-list="[10, 25, 50, 100, all]">
+    </table>
+</div>
+
+<div class="modal" id="modify_user_data" tabindex="-1" role="dialog" aria-labelledby="modifyDataLable"
+    aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width: 600px;">
+            <div class="modal-header">
+                <h3>
+                    <span data-locale="all_modify">修改用户信息</span>
+                    <span class="lang_en" style="font-size: medium;">Edit User Info</span>
+                </h3>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body" style="padding:20px 40px 20px 40px;">
+                <form class="form-horizontal" role="form" autocomplete="off" id="super_modify_user_form">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">
+                            <span data-locale="all_userSite">Site</span>
+                            <span class="lang_en sml">Site</span>
+                        </label>
+                        <div class="col-sm-8">
+                            <select id="super_modifySite" class="form-control" onchange="changSite(this.value)">
+                                <!-- <option value="Admin">Admin</option> -->
+                            </select>
+                        </div>
+                    </div>
+                    <!-- <div class="form-group">
+                        <label class="col-sm-4 control-label">
+                            <span data-locale="all_userSite">Site</span>
+                            <span class="lang_en sml">Site</span>
+                        </label>
+                        <div class="col-sm-8">
+                            <input type="text" id="super_modifySite" class="form-control">
+                        </div>
+                    </div> -->
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">
+                            <span data-locale="all_userPlant">厂别</span>
+                            <span class="lang_en sml">Plant</span>
+                        </label>
+                        <div class="col-sm-8">
+                            <select id="super_modifyPlant" class="form-control">
+                                
+                            </select>
+                        </div>
+                    </div>
+                    <!-- <div class="form-group">
+                        <label class="col-sm-4 control-label">
+                            <span data-locale="all_userPlant">厂别</span>
+                            <span class="lang_en sml">Plant</span>
+                        </label>
+                        <div class="col-sm-8">
+                            <input type="text" id="super_modifyPlant" class="form-control">
+                        </div>
+                    </div> -->
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">
+                            <span data-locale="all_userID">用户工号</span>
+                            <span class="lang_en sml">User ID</span>
+                        </label>
+                        <div class="col-sm-8">
+                            <input type="text" readonly="true" id="super_modifyStaffID" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">
+                            <span data-locale="all_userName">用户姓名</span>
+                            <span class="lang_en sml">User Name</span>
+                        </label>
+                        <div class="col-sm-8">
+                            <input type="text" readonly="true" id="super_modifyStaffName" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">
+                            <span data-locale="superUserMngmt_role">角色</span>
+                            <span class="lang_en sml">Role</span>
+                        </label>
+                        <div class="col-sm-8">
+                            <select id="super_modifyRole" class="form-control">
+                                <option value="Admin">Admin</option>
+                                <option value="User">User</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">
+                            <span data-locale="all_password">密码</span>
+                            <span class="lang_en sml">Password</span>
+                        </label>
+                        <div class="col-sm-8">
+                            <input type="text" id="super_modifyPassword" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">
+                            <span data-locale="all_department">部门</span>
+                            <span class="lang_en sml">Department</span>
+                        </label>
+                        <div class="col-sm-8">
+                            <input type="text" id="super_modifyDepartment" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">
+                            <span data-locale="all_lang">语言</span>
+                            <span class="lang_en sml">Language</span>
+                        </label>
+                        <div class="col-sm-8">
+                            <select id="super_modifyLanguage" class="form-control">
+                                <option value="Chinese">中文</option>
+                                <option value="English">English</option>
+                                <option value="Vietnamese">tiếng việt</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary " onclick="modify_user()"><span
+                                data-locale="all_OK">确定</span><span class="lang_en sml">(OK)</span></button>
+                        <button type="cancel" class="btn btn-primary " data-dismiss="modal"><span
+                                data-locale="all_close">关闭</span><span class="lang_en sml">(Close)</span></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

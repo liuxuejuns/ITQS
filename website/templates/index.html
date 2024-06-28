@@ -1,0 +1,50 @@
+{% load static %}
+	<div class="skill_ipm_container">
+		{% comment %} <div class="option"> {% endcomment %}
+			<div class="row">
+				<div class="col-lg-3 col-lg-offset-2 col-6">
+					<!-- small box -->
+					<div class="small-box bg-warning" onclick="goto_exam_paper()">
+						<div class="inner">
+							<h3 style="white-space: inherit;min-height: 48px;">
+								<span data-locale="index_skillExam">技能考核</span>
+								<span class="lang_en" style="font-size:small;">Skill Examination</span>
+							</h3>
+							<p style="font-size: 1.5rem;min-height: 60px;">
+								<span data-locale="index_youHave">你有</span><span class="text-danger" id="to_exam_paper_num" style="padding: 5px;">0</span><span data-locale="index_toExam"> 个考核待完成!</span>
+								<span class="lang_en sml">You have <span class="text-danger" id="to_exam_paper_num" style="padding: 5px;">0</span> exam(s) to complete!</span>
+							</p>
+							<br/>
+							
+						</div>
+						{% comment %} GO TO THE EXAM {% endcomment %}
+						<div class="small-box-footer">
+							<span data-locale="index_toTheExam">前往</span>
+							<span class="lang_en sml">TAKE EXAM</span>
+						</div> 
+					</div>
+				</div>
+				<div class="col-lg-3 col-lg-offset-2 col-6">
+					<!-- small box -->
+					<div class="small-box bg-info" onclick="goto_published_exam_paper()">
+						<div class="inner">
+							<h3 style="white-space: inherit;min-height: 48px;">
+								<span data-locale="index_issuePaper" >发布考核试卷</span>
+								<span class="lang_en" style="font-size: small;">Publish Exam</span>
+							</h3>
+							<p style="font-size: 1.5rem;min-height: 85px;">
+								<span data-locale="index_youHave">你有</span><span class="text-danger" style="padding: 5px;" id="to_finish_exam_paper_num">0</span><span data-locale="index_notCompleted">份发布试卷有考生未完成!</span>
+								<span class="lang_en sml">You have  <span class="text-danger" style="padding: 5px;" id="to_finish_exam_paper_num">0</span> paper(s) that are not completed by the examinee!</span>
+							</p>
+						</div>
+						<div class="small-box-footer">
+							<span data-locale="index_roSendPapers">前往</span>
+							<span class="lang_en sml">SEND PAPERS</span>
+						</div> 
+					</div>
+				</div>
+				<!-- ./col -->
+			</div>
+			<!-- /.row -->
+		{% comment %} </div> {% endcomment %}
+	</div>

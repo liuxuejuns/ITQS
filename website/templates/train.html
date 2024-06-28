@@ -1,0 +1,130 @@
+{% load static %}
+<div class="train_container">
+	<div class="card-body">
+		<div id="train_notice_tips">
+			<div class="col_md_8">
+				<input id="trainBookID" value="{{bookid}}" style="display: none;" />
+				<input id="trainBookMinTime" value="{{book_min_time}}" style="display: none;" />
+				<p>
+					<span data-locale="train_tipsTitle">培训说明：</span><br />
+					<span class="lang_en sml">Training Instructions:</span>
+				</p>
+				<p>
+					<span data-locale="train_tips1">(1) 每份教材总培训时间 = 教材内容每一页面有效浏览时间累加。</span><br />
+					<span class="lang_en sml">(1) Total training time of each teaching material is the sum of the approved viewing time of pages viewed.</span>
+				</p>
+				<p>
+					<span data-locale="train_tips2">(2) 教材内容每一页面将有最短浏览时间，低于此时间该页面培训时间将计为无效。</span><br />
+					<span class="lang_en sml">(2) There is a minimum viewing time for each page of the teaching material. Viewing time  which is below the minimum time will be considered invalid.</span>
+				</p>
+				<p>
+					<span data-locale="train_tips3">(3) 每份教材将有最短总培训时间，低于此时间本教材该次培训时间将计为无效。</span><br />
+					<span class="lang_en sml">(3) There will be a minimum total training time for each teaching material. Training time which is below the minimum time will be considered invalid.</span>
+				</p>
+				<!-- <p>
+					<span data-locale="train_tips4">(4) 当前浏览页数显示</span>
+					<span class="green" data-locale="train_tips4_1" style="padding: 0 5px;">绿色</span>
+					<span data-locale="train_tips4_2">表示本页已达标，</span>
+					<span class="red" data-locale="train_tips4_3" style="padding: 0 5px;">红色</span>
+					<span data-locale="train_tips4_4">表示未达标。</span><br />
+					<span class="lang_en sml">(4) The number of pages currently viewed will be shown in </span>
+					<span class="lang_en sml green" style="padding: 0 5px;">green</span>
+					<span class="lang_en sml">if the page has reached the standard, otherwise it will be shown in</span>
+					<span class="lang_en sml red" style="padding: 0 5px;">red</span>
+					<span class="lang_en sml">.</span>
+				</p> -->
+				<p>
+					<span data-locale="train_tips7">(4) 开始培训将进入全屏模式，一旦退出全屏模式，本次培训将马上结束。</span><br />
+					<span class="lang_en sml">(4) It will enter the full screen mode at the beginning of the training. Once you exit the full screen mode, the training will end immediately.</span>
+				</p>
+				<p>
+					<span data-locale="train_tips5">(5)点击“退出”按钮可退出本次培训，若本次培训总时间有效按钮颜色为</span>
+					<span class="green" data-locale="train_tips5_1" style="padding: 0 5px;">绿色</span>
+					<span data-locale="train_tips5_2">，否则为</span>
+					<span class="red" data-locale="train_tips5_3" style="padding: 0 5px;">红色</span>
+					<span data-locale="train_tips5_4">。</span><br />
+					<span class="lang_en sml">(5)You can lick 'Exit' button to exit the training. If the total training time is valid, the color of this button will be </span>
+					<span class="lang_en sml green" style="padding: 0 5px;">green</span>
+					<span class="lang_en sml">, otherwise it will be shown in</span>
+					<span class="lang_en sml red" style="padding: 0 5px;">red</span>
+					<span class="lang_en sml">.</span>
+				</p>
+				<p>
+					<img src="{% static 'common/img/train_notice_tips.png'%}" />
+					<span data-locale="train_tips6">注意：系统将只记录每次培训的有效总时间，其他无效时间将不记录。</span><br />
+					<span class="lang_en sml">Note: Only the total approved time for each training will be recorded. Invalid time will not be recorded.</span>
+				</p>
+			</div>
+			<!-- /.col -->
+		</div>
+		<div>
+			<button id="start_training" type="button" class="btn btn-primary " disabled="disabled"
+				onclick="start_training()">
+				<span data-locale="train_start">开始培训</span>
+				<span class="lang_en sml">Start Training</span>
+			</button>
+		</div>
+	</div>
+	<div class="train_audio_container">
+		<audio id="train_audio" preload="auto">
+			<source src="" type="audio/ogg" />
+		</audio>
+	</div>
+	<div id="myCarousel" class="carousel slide" style="display:none">
+		<div id="tool_bar">
+			<div class="audio_btn">
+				<img id="play_img" src="{% static 'common/img/play.png'%}" onclick="audio_play()" />
+				<img id="pause_img" src="{% static 'common/img/pause.png'%}" onclick="audio_pause()" />
+				<img id="none_img" src="{% static 'common/img/none.png'%}" />
+			</div>
+			<span class="right">
+				<div id="show_time">00:00:00</div>
+				<span data-locale="train_pageNum">当前页数</span>
+				<span class="lang_en sml">Page</span>:
+				<span id="page_num">1</span>
+				<a id="check" href="#" onclick="exitPractice()">
+					<span data-locale="train_submit">提交</span>
+					<span class="lang_en sml">Submit</span>
+				</a>
+				<!-- <img id="tips_img" src="../../static/common/img/train_tips.png" /> -->
+			</span>
+			{% comment %} <div id="train_tips">
+				<div>培训说明：</div>
+				<div>(1) 每份教材总培训时间=教材内容每一页面有效浏览时间累加。</div>
+				<div>(2) 教材内容每一页面将有最短浏览时间，低于此时间该页面培训时间将计为无效。</div>
+				<div>(3) 每份教材将有最短总培训时间，低于此时间本教材该次培训时间将计为无效。</div>
+				<div>(4) 当前浏览页数显示<span class="green">绿色</span>表示本页已达标，<span class="red">红色</span>表示未达标。</div>
+				<div>(5)点击“检查”按钮可检查本次培训总时间是否有效，若有效按钮颜色为<span class="green">绿色</span>，否则为<span class="red">红色</span>。
+				</div>
+				<div><img src="{% static 'common/img/train_notice_tips.png'%}" />注意:<br>系统将只记录每次培训的有效总时间，其他无效时间将不记录。
+				</div>
+				<div> <a id="check" onclick="openFullscreen_train()">开始培训</a> </div>
+			</div> {% endcomment %}
+		</div>
+		<!-- 轮播教材 -->
+		<div class="carousel-inner">
+			<!-- <div class="carousel-item active">
+				<img src="../../static/common/img/train/SMT AOI復判技能训练教材/幻灯片1.PNG" />
+			</div> -->
+		</div>
+
+		<!-- 左右切换按钮 -->
+		{% comment %} <a class="carousel-control-prev" href="#myCarousel" data-slide="prev">
+			<span class="carousel-control-prev-icon"
+				style="background-image:url({% static 'common/img/left.png' %});width:50px;height:50px;background-color: rgba(255,255,255,0);opacity:0"></span>
+		</a>
+		<a class="carousel-control-next" href="#myCarousel" data-slide="next">
+			<span class="carousel-control-next-icon"
+				style="background-image:url({% static 'common/img/right.png' %});width:50px;height:50px"></span>
+		</a> {% endcomment %}
+		<!-- 轮播（Carousel）导航 -->
+		<a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+			<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+			<span class="sr-only">Previous</span>
+		</a>
+		<a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+			<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+			<span class="sr-only">Next</span>
+		</a>
+	</div>
+</div>

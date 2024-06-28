@@ -1,0 +1,32 @@
+{% load static %}
+{% block self_js %}
+<script src="{% static 'common/js/slef/practice_records.js' %}"></script>
+<script src="{% static 'dist/excellentexport.js' %}"></script>
+{% endblock %}
+{% block nav_content%}
+	<!-- <div id="train_record_export"><a download="培训记录" href="#" onclick="return ExcellentExport.excel(this, 'train_record_table', 'Sheet Name Here');">一键导出记录<img src="../../static/common/img/export.png"/> </a></div> -->
+<!-- <div class="content-wrapper"style="margin-left: 20px;"> -->
+	<div class="train_records_container">
+		<div id="toolbar_practice_recoder">
+			<div id="train_record_export"><a download="训练记录" href="#" onclick="return ExcellentExport.excel(this, 'my_practice_recoder_table', 'Sheet Name Here');">一键导出训练记录<img src="../../static/common/img/export.png"/></a></div>
+		</div>
+		<table
+		  id="my_practice_recoder_table"
+		  data-toolbar="#toolbar_practice_recoder"
+		  data-search="true"
+		  data-show-toggle="true"
+		  data-show-fullscreen="true"
+		  data-show-columns="true"
+		  data-show-columns-toggle-all="true"
+		  data-click-to-select="true"
+		  data-show-pagination-switch="true"
+		  data-pagination="true"
+		  data-id-field="id"
+		  data-page-list="[10, 25, 50, 100, all]">
+		</table>
+		<script>
+			//从后端抓过来的数据
+			make_practice_record_view()
+		</script>
+	</div>
+<!-- </div> -->

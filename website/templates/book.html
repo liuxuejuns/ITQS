@@ -1,0 +1,297 @@
+{% load static %}
+<!-- <div class=" content-wrapper" style="margin-left: 20px;"> -->
+	<div class="manage_data_container">
+		<div id="toolbar">
+			<button id="add" class="btn btn-primary" data-toggle="modal" data-target="#add_data">
+				<i class="fa fa-plus-circle"></i>
+				<span data-locale="book_addBook">添加技能教材</span>
+				<span class="lang_en sml">Add Teaching Material</span>
+		</button>
+			<button id="remove" class="btn btn-danger" onclick="check_del_book()">
+				<i class="fa fa-trash"></i>
+				<span data-locale="book_delBooks">批量删除技能教材</span>
+				<span class="lang_en sml">Delete Teaching Materials</span>
+			</button>
+		</div>
+		<table id="table" 
+			data-toolbar="#toolbar" 
+			data-search="true" 
+			data-show-toggle="true"
+			data-show-fullscreen="true" 
+			data-click-to-select="true" 
+			data-show-pagination-switch="true" 
+			data-pagination="true" 
+			data-id-field="id"
+			data-page-list="[10, 25, 50, 100, all]" 
+			data-response-handler="responseHandler">
+		</table>
+<!-- </div> -->
+<div class="modal fade" id="add_data" tabindex="-1" role="dialog" aria-labelledby="addDataLable" aria-hidden="true"
+	data-backdrop="static">
+	<div class="modal-dialog">
+		<div class="modal-content" style="width: 600px;">
+			<div class="modal-header">
+				<h3>
+					<span data-locale="book_addBook">添加技能教材</span>
+					<span class="lang_en" style="font-size: medium;">Add Teaching Material</span>
+				</h3>
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			</div>
+			<div class="modal-body" style="padding:20px 40px 20px 40px;">
+				<form class="form-horizontal" role="form" autocomplete="off" method="post" id="add_data_form">
+					<div class="form-group" hidden>
+						<label class="col-sm-4 control-label">
+							<span data-locale="book_bookBankID">训练教材库编号</span>
+							<span class="lang_en sml">Teaching Material Bank ID</span>
+						</label>
+						<div class="col-sm-8">
+							<input type="text" id="newTrainingBankID" value="{{trainingBankID}}" readonly="true" class="form-control">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 control-label">
+							<span data-locale="book_bookBank">教材库名字</span>
+							<span class="lang_en sml">Teaching Material Bank</span>
+						</label>
+						<div class="col-sm-8">
+							<input type="text" id="newTrainingBankName" readonly="true" value="{{trainingBankName}}" class="form-control">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 control-label">
+							<span data-locale="book_zipFile">教材zip文件</span>
+							<span class="lang_en sml">Teaching Material File(.zip)</span>
+						</label>
+						<div class="col-sm-8">
+							<label for="newBookZipName" type="button" style="padding: 5px;">
+								<span data-locale="all_chooseFile">选择文件</span>
+								<span class="lang_en sml">Choose File</span>
+							</label>
+							<input type="file" accept=".zip" id="newBookZipName" onchange="check_book_zip()" style="display: none"/>
+							<label class="text-warning" data-locale="book_zipFileTips" title="Only the images and audio tracks naming the same as the zip package can be retrieved (.png /.jpg /.m4a only)">只会获取压缩包中跟压缩包名字一样的文件夹中的图片和音频，且png/jpg格式的图片和m4a格式的音频。</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 control-label">
+							<span data-locale="book_bookName">教材名称</span>
+							<span class="lang_en sml">Teaching Material</span>
+						</label>
+						<div class="col-sm-8">
+							<input type="text" id="newBookName" readonly="true" class="form-control">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 control-label">
+							<span data-locale="book_minTime">最短培训时间</span>
+							<span class="lang_en sml">Minimum Duration</span>
+						</label>
+						<div class="col-sm-8">
+							<input type="text" oninput="value=value.replace(/[^\d]/g,'')" id="newMinTime" title="Enter a number (Unit: seconds)" placeholder="请输入数字，单位为秒" data-placeholder="book_inpNumSecph" class="form-control">
+						</div>
+					</div>
+					<div class="form-group" hidden>
+						<label class="col-sm-4 control-label">
+							<span data-locale="all_creatorID">创建人工号</span>
+							<span class="lang_en sml">Creator ID</span>
+						</label>
+						<div class="col-sm-8">
+							<input type="text" id="newCreatorID" class="form-control">
+						</div>
+					</div>
+					<div class="form-group" hidden>
+						<label class="col-sm-4 control-label">
+							<span data-locale="all_creatorName">创建人名字</span>
+							<span class="lang_en sml">Creator</span>
+						</label>
+						<div class="col-sm-8">
+							<input type="text" id="newCreatorName" class="form-control">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 control-label">
+							<span data-locale="all_reason">理由</span>
+							<span class="lang_en sml">Reason</span>
+						</label>
+						<div class="col-sm-8">
+						    <textarea class="form-control" id="newBookReason" rows="3" name="reason"></textarea>
+						</div>
+					</div>
+				</form>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary " onclick="add_book()"><span data-locale="all_OK">确定</span><span class="lang_en sml">(OK)</span></button>
+					<button type="cancel" class="btn btn-primary " data-dismiss="modal"><span data-locale="all_close">关闭</span><span class="lang_en sml">(Close)</span></button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal" id="modify_data" tabindex="-1" role="dialog" aria-labelledby="modifyDataLable" aria-hidden="true"
+	data-backdrop="static">
+	<div class="modal-dialog">
+		<div class="modal-content" style="width: 600px;">
+			<div class="modal-header">
+				<h3>
+					<span data-locale="book_modifyBook">修改技能教材</span>
+					<span class="lang_en" style="font-size: medium;">Edit Teaching Material</span>
+				</h3>
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+			<div class="modal-body" style="padding:20px 40px 20px 40px;">
+				<form class="form-horizontal" role="form" autocomplete="off"  id="modify_data_form">
+					<div class="form-group" hidden>
+						<label class="col-sm-4 control-label">
+							<span data-locale="book_bookNum">训练教材编号</span>
+							<span class="lang_en sml">Teaching Material ID</span>
+						</label>
+						<div class="col-sm-8">
+							<input type="text" id="modifyBookID" name="book_id" readonly="true" class="form-control">
+						</div>
+					</div>
+					<div class="form-group" hidden>
+						<label class="col-sm-4 control-label">
+							<span data-locale="book_bookBankID">训练教材库编号</span>
+							<span class="lang_en sml">Teaching Material Bank ID</span>
+						</label>
+						<div class="col-sm-8">
+							<input type="text" id="modifyTrainingBankID" name="training_bank_id" value="{{trainingBankID}}" readonly="true" class="form-control">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 control-label">
+							<span data-locale="book_bookBank">训练教材库名字</span>
+							<span class="lang_en sml">Teaching Material Bank</span>
+						</label>
+						<div class="col-sm-8">
+							<input type="text" readonly="true" id="modifyTrainingBankName" name="training_bank_name" value="{{trainingBankName}}" class="form-control">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 control-label">
+							<span data-locale="book_bookName">教材名称</span>
+							<span class="lang_en sml">Teaching Material</span>
+						</label>
+						<div class="col-sm-8">
+							<input type="text" id="modifyBookName" name="book_name" readonly="true" class="form-control">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 control-label">
+							<span data-locale="book_minTime">最短培训时间</span>
+							<span class="lang_en sml">Minimum Duration</span>
+						</label>
+						<div class="col-sm-8">
+							<input type="text" oninput="value=value.replace(/[^\d]/g,'')" id="modifyBookMinTime" name="book_min_time" title="Enter a number (Unit: seconds)" placeholder="请输入数字，单位为秒" data-placeholder="book_inpNumSecph" class="form-control">
+						</div>
+					</div>
+					<div class="form-group" hidden>
+						<label class="col-sm-4 control-label">
+							<span data-locale="all_creatorID">创建人工号</span>
+							<span class="lang_en sml">Creator ID</span>
+						</label>
+						<div class="col-sm-8">
+							<input type="text" readonly="true" id="modifyCreatorID" name="creator_id" class="form-control">
+						</div>
+					</div>
+					<div class="form-group" hidden>
+						<label class="col-sm-4 control-label">
+							<span data-locale="all_creatorName">创建人名字</span>
+							<span class="lang_en sml">Creator</span>
+						</label>
+						<div class="col-sm-8">
+							<input type="text" readonly="true" id="modifyCreatorName" name="creator_name" class="form-control">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 control-label">
+							<span data-locale="all_reason">理由</span>
+							<span class="lang_en sml">Reason</span>
+						</label>
+						<div class="col-sm-8">
+						    <textarea class="form-control" rows="3" id="modifyreason" name="reason"></textarea>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary " onclick="modify_book()"><span data-locale="all_OK">确定</span><span class="lang_en sml">(OK)</span></button>
+						<button type="cancel" class="btn btn-primary " data-dismiss="modal"><span data-locale="all_close">关闭</span><span class="lang_en sml">(Close)</span></button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- 删除技能教材模态框 -->
+<div class="modal" id="del_data" tabindex="-1" role="dialog" aria-labelledby="delDataLable" aria-hidden="true"
+	data-backdrop="static">
+	<div class="modal-dialog">
+		<div class="modal-content" style="width: 600px;">
+			<div class="modal-header">
+				<h3>
+					<span data-locale="book_delBook">删除技能教材</span>
+					<span class="lang_en" style="font-size: medium;">Delete Teaching Material</span>
+				</h3>
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+			<div class="modal-body" style="padding:20px 40px 20px 40px;">
+				<form class="form-horizontal" role="form" autocomplete="off" id="del_data_form">
+					{% csrf_token %}
+					<div class="form-group" hidden>
+						<label class="col-sm-4 control-label" data-locale="book_bookNum"> 训练教材编号:</label>
+						<div class="col-sm-8">
+							<input type="text" id="BookID" name="book_id" readonly="true" class="form-control">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 control-label">
+							<span data-locale="all_reason">理由</span>
+							<span class="lang_en sml">Reason</span>
+						</label>
+						<div class="col-sm-8">
+						    <textarea class="form-control" id="bookReason" rows="3" name="reason"></textarea>
+						</div>
+					</div>
+					 
+					<div class="modal-footer">
+					    <button type="button" class="btn btn-primary" onclick="delete_book()"><span data-locale="all_OK">确定</span><span class="lang_en sml">(OK)</span></button>
+					    <button type="button" class="btn btn-primary " data-dismiss="modal"><span data-locale="all_close">关闭</span><span class="lang_en sml">(Close)</span></button>
+				    </div>
+				</form>
+				
+			</div>
+		</div>
+	</div>
+</div>
+
+	<!-- 批量删除技能教材模态框 -->
+	<div class="modal" id="del_books" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+		<div class="modal-dialog">
+			<div class="modal-content" style="width: 600px;">
+				<div class="modal-header">
+					<h3>
+						<span data-locale="book_delBooks">批量删除技能教材</span>
+						<span class="lang_en" style="font-size: medium;">Delete Teaching Materials</span>
+					</h3>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				</div>
+				<div class="modal-body" style="padding:20px 40px 20px 40px;">
+					<form class="form-horizontal" role="form" autocomplete="off">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">
+								<span data-locale="all_reason">理由</span>
+								<span class="lang_en sml">Reason</span>
+							</label>
+							<div class="col-sm-8">
+								<textarea class="form-control" id="del_books_reason" rows="3"></textarea>
+							</div>
+						</div>	
+						<div class="modal-footer">
+							<button type="button" class="btn btn-primary" onclick="del_books()"><span data-locale="all_OK">确定</span><span class="lang_en sml">(OK)</span></button>
+							<button type="button" class="btn btn-primary " data-dismiss="modal"><span data-locale="all_close">关闭</span><span class="lang_en sml">(Close)</span></button>
+						</div>
+					</form>
+	
+				</div>
+			</div>
+		</div>
+	</div>
