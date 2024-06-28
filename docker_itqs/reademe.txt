@@ -1,0 +1,2 @@
+upload/download docker image to primary ²Ö¿â
+1. docker login 10.41.95.99 ÓÃ»§Ãû: admin ÃÜÂë: Harbor12345

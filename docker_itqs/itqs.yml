@@ -1,0 +1,52 @@
+# Use postgres/example user/password credentials
+version: '3'
+
+services:
+  nginx:
+    container_name: itqs-nginx
+    image: reg.swharbor.com/itqs/nginx:1.18
+    restart: always
+    ports:
+      - 8100:8100
+    volumes:
+      - ./itqs-nginx.conf:/etc/nginx/conf.d/itqs-nginx.conf #bind mount(将项目文件挂载到容器中)
+      - ../itqs/static:/itqs/itqs/itqs/static #bind mount(将项目文件挂载到容器中)
+      - ../../media:/itqs/media #bind mount(将项目文件挂载到容器中)
+      - ../../logs/nginx:/var/log/nginx     #bind mount(将Nginx产生的log挂载到主机的log目录下)
+    command: [nginx, '-g', 'daemon off;']
+    depends_on:
+      - web
+
+  web:
+    container_name: itqs-web
+    # build: .
+    image: reg.swharbor.com/itqs/docker_itqs_web:1.0
+    restart: always   
+    command: uwsgi --ini /itqs/itqs/docker_itqs/itqs_uwsgi.ini        #tidc容器运行的目录(取代Dockerfile中的命令)
+    # ports:
+    #   - 8101:8111
+    volumes:
+      #- ..:/itqs/itqs #bind mount(将项目文件挂载到容器中)
+      - ../itqs:/itqs/itqs/itqs
+      #- ../itqs:/itqs/itqs/atqs
+      - ../docker_itqs:/itqs/itqs/docker_itqs
+      - ../../media:/itqs/media #bind mount(将项目文件挂载到容器中)
+      - ../../logs/django:/itqs/logs/django     #bind mount(将Nginx产生的log挂载到主机的log目录下)
+    depends_on:
+      - postgres
+
+  postgres:
+    container_name: itqs-postgres
+    image: reg.swharbor.com/itqs/postgres:10
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: '1234qwer!@#$$QWER'
+      # POSTGRES_USER: postgres
+      POSTGRES_DB: itqs
+    ports:
+      - 8101:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data/   # pgdata被定义为：/var/lib/docker/volumes/itqs_pgdata
+
+volumes:
+  pgdata:                        #定义pgdata(volume)数据卷(其生命周期独立于容器之外)
