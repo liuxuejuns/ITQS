@@ -1,0 +1,51 @@
+
+html{
+    height: 100%;
+    }
+body{
+    padding: 0;
+    margin: 0;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    
+	background-color: #fff;
+	
+	height: auto;
+}
+
+.lang_en{
+    display: none;
+}
+
+.lang_en.sml{
+    font-size: smaller;
+}
+
+#loginDiv {
+    width: 450px;
+    display: flex;
+	margin-top: 120px;
+	position: absolute;
+	left: 50%;
+	transform: translate(-50%, 0);
+    align-items: center;
+    height: auto;
+    background-color: rgba(51,51,51, 0.5);
+    box-shadow: 7px 7px 17px rgba(51,51,51, 0.4);
+    border-radius: 25px;
+}
+
+.registerDiv {
+	margin-top: 50px !important;
+}
+
+.header {
+    background-color:#00506e!important;
+    height: 30px;
+    padding-top:10px;
+    padding-bottom:12px;
+    padding-left:24px;
+    text-align: left;
+    color:white;
+    margin-bottom: 3px;
+}

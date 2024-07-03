@@ -1,0 +1,534 @@
+body{
+    overflow-x: hidden;
+}
+
+.content-wrapper{
+	padding: 2%;
+}
+
+/* 导航栏 */
+#itqs_scroll{
+    overflow-y:scroll;
+	width: 100%;
+	height:460px;
+}
+
+#itqs_scroll ul img{
+    width:12px;
+    height:12px;
+	margin-left: 10px;
+}
+
+#itqs_scroll::-webkit-scrollbar {
+	width: 7px;
+}
+
+#itqs_scroll::-webkit-scrollbar-thumb {
+	border-radius: 10px;
+	background-color: #555;
+}
+
+#itqs_scroll ul span{
+	white-space: pre-line;
+}
+
+/* 鼠标经过时的背景色 */
+.nav>li>a:focus, .nav>li>a:hover{
+	background-color: rgba(255,255,255,.1)!important;
+    color: #fff;
+}
+
+/* 选中的(active状态)一级列字体颜色表背景色 */
+.nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover{
+	color: #fff;
+    background-color: #007bff!important;
+}
+
+/* 展开子列表时对应一级列表的背景色 */
+.nav .open>a, .nav .open>a:focus, .nav .open>a:hover{
+    background-color: rgba(255,255,255,.1)!important;
+}
+
+/* 子列表字体颜色 */
+.dropdown-menu>li>a{
+	color: #333!important;
+}
+
+/* 选中的(active)子列表字体颜色及背景颜色 */
+.dropdown-menu>.active>a, .dropdown-menu>.active>a:focus, .dropdown-menu>.active>a:hover{
+	color: #fff!important;
+    background-color: #007bff!important;
+    outline: 0;
+}
+
+a{
+	text-decoration: none!important;
+}
+.lang_en{
+    display: none;
+}
+
+.lang_en.sml{
+    font-size: smaller;
+}
+
+.nav_bar_bkg{
+	/* background-color: rgba(0, 123, 255, 0.1); */
+	background-color: rgba(255, 255, 255, 0.1);
+	color:#000000;
+}
+#version{
+	margin-left: 10px;
+	font-weight: 600!important;;
+}
+[class$="container"]{
+	padding-top: 15px;
+}
+
+.skill_ipm_container {
+	text-align: center;
+}
+
+/* ***********************************培训部分******************************************* */
+.train_book_container .table-responsive{
+	background-color: #fff0;
+}
+
+.train_book_container .tips {
+	height: 50px;
+	background-color: #fff0;
+	display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.tips img{
+	width: 25px;
+	height: 25px;
+	margin-right: 10px;
+}
+
+.tips h4 {
+	display: inline;
+}
+
+.tips h4 span {
+	color: #fa0a3e;
+	font-size: 1.17em;
+	margin: 5px;
+}
+
+.skill_ipm_container a {
+	background-color: #007bff;
+	color: #ffffff;
+	border-radius: .25rem;
+	padding: .5rem 1rem;
+}
+
+.skill_ipm_container .option {
+	margin-top: 15px;
+}
+
+.train_container,.train_audio_container{
+	padding-top: 0;
+}
+
+.train_container{
+	position: relative;
+}
+
+/* 去掉左右按钮的阴影部分 */
+.carousel-control.right, .carousel-control.left{
+	background-image: none;
+}
+
+#tool_bar,#show_time{
+	padding: 5px 5px 5px 5px;
+	display: inline;
+ }
+ 
+
+.audio_btn #over_again{
+	cursor: pointer;
+	padding: 5px 20px;
+	color: #ffffff;
+	background-color:#337ab7;
+	border-radius: 5px;
+ }
+ 
+.audio_btn img{
+	width: 30px;
+	height: 30px;
+ }
+
+ #down_img{
+	width: 25px;
+	height: 25px;
+	margin-left: 5px;
+	float: right;
+ }
+
+ .audio_btn img:not(#none_img){
+	cursor:pointer;
+ }
+
+ .train_container #tool_bar{
+	/* display: none; */
+	background: rgba(250, 250, 250, 0.8);
+	border-radius: 10px;
+	position: absolute;
+	z-index: 9999;
+    right: 5px;
+ }
+
+ #tool_bar .audio_btn {
+	margin-right: 10px;
+	float: left;
+ }
+
+#tool_bar .right{
+	margin-right: 5px;
+	float: right;
+ }
+
+#tool_bar .right #check{
+	cursor: pointer;
+	padding: 5px 10px;
+	color: #ffffff;
+	background-color: #df2b2b;
+	border-radius: 5px;
+ }
+
+#tool_bar .right .train_pass{
+	background-color:#047904!important;
+ }
+
+#tool_bar .right span{
+	font-weight: 600;
+ }
+
+#tool_bar .right #page_num{
+	color:#df2b2b;
+	font-size: 20px;
+ }
+
+#tool_bar .right .page_pass{
+	color: #047904!important;
+ }
+
+#tool_bar .right #tips_img{
+	margin-top: -5px;
+ }
+/* 
+#train_tips{
+	display: none;
+	color:#000000;
+	font-weight: 550;
+	background: rgba(250, 250, 250, 0.8);
+	width: 300px;
+	padding:10px;
+	border: 2px solid #629fe6;
+	border-radius: 10px;
+	position: absolute;
+    top: 100px;
+    right: 10px;
+    z-index: 9999;
+} */
+
+.train_skill_category_container .card-body,
+.exam_notice_container #exam_notice_tips,
+.train_container .card-body{
+	display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.train_container #train_notice_tips,
+.exam_notice_container .col_md_8{
+	max-width: 70%;
+}
+
+.train_skill_category_container .card-body #train_notice_tips .col_md_8,
+.exam_notice_container .card-body #exam_notice_tips .col_md_8,
+.practice_container .check_ans .practice_tips #my_result,
+.train_container .card-body #train_notice_tips .col_md_8{
+	font-size: medium;
+	font-weight: 550;
+}
+
+.train_skill_category_container .card-body #train_notice_tips .col_md_8 img,
+.exam_notice_container .card-body #exam_notice_tips .col_md_8 img,
+.train_container .card-body #train_notice_tips .col_md_8 img,
+.practice_container .card-body.practice_tips p img{
+	width:20px;
+	height: 20px;
+	margin: -5px 5px 0px -3px;
+}
+
+.train_skill_category_container .card-body #train_notice_tips .col_md_8 p:last-child,
+.exam_notice_container .card-body #exam_notice_tips .col_md_8 p:last-child,
+.practice_container .practice_tips #my_result p:last-child,
+.train_container .card-body #train_notice_tips .col_md_8 p:last-child,
+.train_container #train_tips div:last-child{
+	color:#df2b2b;
+}
+
+.train_skill_category_container .card-body #train_notice_tips .col_md_8 p span.red,
+.exam_notice_container .card-body #exam_notice_tips .col_md_8 p span.red,
+.train_container .card-body #train_notice_tips .col_md_8 p span.red,
+.train_container #train_tips span.red{
+	color: #df2b2b;
+}
+
+
+.train_skill_category_container .card-body #train_notice_tips .col_md_8 p span.green,
+.exam_notice_container .card-body #exam_notice_tips .col_md_8 p span.green,
+.train_container .card-body #train_notice_tips .col_md_8 p span.green,
+.train_container #train_tips span.green{
+	color: #047904;
+}
+
+.issue_paper_container #issue_skill_type,
+.train_skill_category_container .card-body #train_skill_type {
+	display: table;
+}
+
+.issue_paper_container #issue_skill_type .form-group,
+.train_skill_category_container .card-body #train_skill_type .form-group{
+	display: table-row;
+}
+
+.issue_paper_container #issue_skill_type .form-group label,
+.train_skill_category_container .card-body #train_skill_type .form-group label{
+	display: table-cell;
+	line-height: 50px;
+	font-size: 30px;
+	cursor: pointer;
+}
+
+.practice_container #practice_option_container div input:checked + label,
+.examing_container #option_container div input:checked + label,
+#issue_skill_type input[name="skill_type"]:checked + label,
+#train_skill_type input[name="skill_type"]:checked + label{
+	padding: 0 5px;
+	text-align: center;
+	color: #ffffff;
+	font-family: fantasy;
+	border-style: outset;
+	background-color:#ffc107;
+}
+
+.issue_paper_container #issue_skill_type .form-group input,
+.train_skill_category_container .card-body #train_skill_type .form-group input{
+	display:none;
+}
+
+.exam_notice_container .card-body .exam_btn,
+.train_skill_category_container .card-body #train_skill_type .skill_btn{
+	padding-top: 10px;
+	width: fit-content;
+    margin: 0 auto;
+}
+
+ .train_book_container table tbody tr:not(#none_book){
+	cursor: pointer;
+ }
+
+ .train_records_container #train_record_export{
+	width:max-content;
+	margin-left: 5px;
+}
+
+.issue_paper_container .issue_btn a,
+ .train_records_container #train_record_export a{
+	padding: 7px 20px;
+	color: #ffffff;
+	background-color:#337ab7;
+	border-radius: 5px;
+ }
+
+ .train_records_container #train_record_export img{
+	width:15px;
+	height: 15px;
+	margin:5px 5px 10px 5px;
+}
+
+/* ***********************************考核部分******************************************* */
+.issue_paper_container .issue{
+	background-color: #ffffff00;
+	padding: 20px 0;
+	margin-bottom: 20px;
+}
+
+.issue_paper_container #issue_skill_type{
+	max-width:500px;
+	margin: 0 auto;
+	display: flex;
+	flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.issue_paper_container #issue_skill_type .form-group label{
+	/* display: inline-block;  */
+	margin: 5px 15px;
+	text-align: center;
+	border-bottom:1px solid tan;
+}
+
+.issue_paper_container .table-responsive{
+	padding-top: 20px;
+}
+
+/* ***********************************考核部分******************************************* */
+.practice_container .check_ans_btn,
+.practice_container .check_ans,
+.practice_container .card,
+.examing_container .card,
+.practice_container .my_practice,
+.examing_container .my_exam{
+	display: none;
+}
+
+.practice_container .right_btn,
+.examing_container .examing_btn{
+	background-color: #ffffff;
+	text-align: right;
+}
+
+.practice_container #practice_option_container,
+.examing_container #option_container{
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	padding: 5px 30px;
+	background-color: #ffffff;
+}
+
+.practice_container #practice_option_container div,
+.examing_container #option_container div{
+	/* height: max-content;
+	display: flex;
+	justify-content: center;
+	align-items: center; */
+	font-size: x-large;
+}
+
+.practice_container #practice_option_container div label:hover,
+.examing_container #option_container div label:hover{
+	cursor: pointer;
+}
+
+.practice_container #practiceQuestions .question_item,
+.examing_container #myQuestions .question_item{
+	height: 100vh;
+	text-align:center;
+}
+
+.practice_container #practiceQuestions .question_item img,
+.examing_container #myQuestions .question_item img{
+	height:90%;
+	display: inline-block;
+}
+
+/* ***********************************发布试卷部分******************************************* */
+.pre_issue_paper_container #to_issue{
+	margin-left: 10px ;
+}
+
+.issue_paper_container .issue .issue_choices #Q_bankID{
+	display: none;
+}
+
+.issue_paper_container .issue_btn{
+	display: flex;
+	justify-content: center;
+	margin-top: 10px;
+}
+
+/* 修改上传文件的input标签样式 */
+.issue_paper_container .issue_btn a{
+	margin-right: 10px;
+	position: relative;
+    overflow: hidden;
+	text-indent: 0;
+}
+
+.issue_paper_container .issue_btn input{
+	position: absolute;
+    font-size: 100px;
+    right: 0;
+    top: 0;
+	opacity: 0;
+	cursor: pointer;
+}
+
+.issue_paper_container .issue_btn #examinee_import img{
+   width:15px;
+   height: 15px;
+   margin-left: 5px;
+}
+
+.examing_btn .btn{
+	display: inline;
+	margin-left: 5px;
+}
+
+.examing_btn .btn a {
+	background-color: #337ab7;
+	color: #ffffff;
+	border-radius: .25rem;
+	padding: .5rem 1rem;
+}
+
+.pre_exam_container{
+	background:#ffffff00;
+}
+
+.manage_data_container #examieed_table img,
+.train_records_container #my_exam_recoder_table img,
+.pre_exam_container #my_exam_table img{
+	width:15px;
+	height: 15px;
+}
+
+.btn:focus,.btn:active:focus,
+.btn.active:focus,.btn.focus,
+.btn:active.focus,.btn.active.focus { 
+ outline: none;  
+ border-color: transparent;  
+ box-shadow:none;
+}
+
+.examinee_not_same{
+	background-color: #df2b2b73;
+	color: #ffffff;
+}
+
+.examinee_no_register{
+	background-color: #fbefb173;
+}
+
+/* ***********************************训练部分******************************************* */
+.practice_container #practice_notice_tips .form-group:last-child{
+	text-align: center;
+}
+
+.practice_container .check_ans .card-body{
+	display: flex;
+    flex-direction: column;
+    align-items: center;
+	font-size: large;
+	height: 100vh;
+	max-width: max-content;
+	margin: 0 auto;
+	padding-top: 100px;
+}
+
+.practice_container .check_ans .card-body #my_result{
+	max-width: 70%;
+}
+
+.practice_container .check_ans .card-body .examing_btn{
+	margin-top: 50px;
+	text-align: center;
+}
